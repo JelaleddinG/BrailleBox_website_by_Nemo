@@ -90,12 +90,12 @@ img { max-width: 100%; height: auto; }
 
 .btn-dark {
   background: #0f172a;
-  color: white;
+  color: #ffffff !important;
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
 }
 .btn-dark:hover {
   background: var(--bb-dark-teal);
-  color: white;
+  color: #ffffff !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 30px rgba(0, 128, 128, 0.24);
 }
