@@ -35,8 +35,8 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <Link href="/contact" className="btn-primary">
-          Request Early Access
+        <Link href="/login" className="btn-primary">
+          Login
         </Link>
       </div>
     </header>
