@@ -10,23 +10,23 @@ const panels = [
   {
     id: "overview",
     eyebrow: "Overview",
-    title: "The current BrailleBox, shown as the full device.",
+    title: "See the device as a whole.",
     body:
-      "Start with the whole device. This is the current BrailleBox, not a future concept. The first view should make the form readable before anything else happens.",
+      "Start with the full form. Before anything else, the device should read clearly and feel easy to understand.",
   },
   {
     id: "input",
     eyebrow: "Brailler-style input",
-    title: "Six-button input, shown as the main interaction point.",
+    title: "Focus on the six-key input.",
     body:
-      "The second view moves closer to the six-button Brailler-style input. That is where the interaction becomes clearer and the device starts to explain itself.",
+      "The next view moves closer to the six-key Brailler-style input, where the interaction becomes more intuitive and specific.",
   },
   {
     id: "detail",
     eyebrow: "Braille detail",
-    title: "Then move closer to the labeled button detail.",
+    title: "Move closer to the tactile detail.",
     body:
-      "The final view moves in with more focus. It should bring attention to tactile detail without losing the device entirely or turning the model into an abstract shape.",
+      "The final view brings attention to the button detail and the tactile character of the device without losing the shape of the product.",
   },
 ];
 
@@ -69,9 +69,6 @@ function CameraRig({ activeIndex }: { activeIndex: number }) {
 function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
   const geometry = useLoader(STLLoader, "/assets/current-braillebox-assembly.stl");
   const groupRef = useRef<THREE.Group>(null);
-  const meshRef = useRef<THREE.Mesh>(null);
-  const edgeRef = useRef<THREE.LineSegments>(null);
-
   const material = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
@@ -108,7 +105,7 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
   const edges = useMemo(() => new THREE.EdgesGeometry(normalizedGeometry, 32), [normalizedGeometry]);
 
   useFrame((state) => {
-    if (!groupRef.current || !meshRef.current || !edgeRef.current) return;
+    if (!groupRef.current) return;
     const target = CAMERA_STATES[activeIndex] ?? CAMERA_STATES[0];
 
     groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, target.rotation.x, 0.06);
@@ -122,8 +119,8 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
 
   return (
     <group ref={groupRef}>
-      <mesh ref={meshRef} geometry={normalizedGeometry} material={material} />
-      <lineSegments ref={edgeRef} geometry={edges}>
+      <mesh geometry={normalizedGeometry} material={material} />
+      <lineSegments geometry={edges}>
         <lineBasicMaterial color="#fff2cf" transparent opacity={0.22} />
       </lineSegments>
     </group>
@@ -143,7 +140,7 @@ function ModelStage({ activeIndex }: { activeIndex: number }) {
         <Environment preset="studio" />
       </Canvas>
       <div className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center text-center text-xs uppercase tracking-[0.24em] text-white/42">
-        Current device • Full Assembly No PCB
+        Current BrailleBox
       </div>
       <div className="pointer-events-none absolute inset-0 rounded-[2.4rem] ring-1 ring-inset ring-white/8" />
     </div>
@@ -180,14 +177,11 @@ export function ProductScrollShowcase() {
         <div className="max-w-4xl">
           <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">Our Product</div>
           <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl">
-            The current BrailleBox,
-            <br />
-            in three clear views.
+            See how BrailleBox is built.
           </h1>
           <p className="mt-7 max-w-3xl text-lg leading-8 text-white/74 sm:text-xl">
-            First show the full device. Then move to the six-button input.
-            Then move closer to the Braille-labeled detail. The motion should
-            explain the product, not distract from it.
+            Start with the full device, move into the six-key input, and then
+            focus on the tactile details that shape the experience.
           </p>
         </div>
 
