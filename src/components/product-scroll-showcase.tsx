@@ -35,9 +35,9 @@ function CameraRig({ activeIndex }: { activeIndex: number }) {
 
   useFrame(() => {
     const targets = [
-      { position: new THREE.Vector3(0, 1.1, 9.8), lookAt: new THREE.Vector3(0, 0, 0) },
-      { position: new THREE.Vector3(0.3, 0.55, 7.1), lookAt: new THREE.Vector3(0.22, -0.03, 0.12) },
-      { position: new THREE.Vector3(-0.22, 0.34, 5.8), lookAt: new THREE.Vector3(-0.1, -0.06, 0.18) },
+      { position: new THREE.Vector3(0, 1.2, 11.8), lookAt: new THREE.Vector3(0, 0, 0) },
+      { position: new THREE.Vector3(0.18, 0.82, 10.2), lookAt: new THREE.Vector3(0.16, -0.02, 0.06) },
+      { position: new THREE.Vector3(-0.1, 0.72, 9.1), lookAt: new THREE.Vector3(-0.06, -0.04, 0.1) },
     ];
 
     const target = targets[activeIndex] ?? targets[0];
@@ -119,6 +119,7 @@ function ModelStage({ activeIndex }: { activeIndex: number }) {
       <div className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center text-center text-xs uppercase tracking-[0.24em] text-white/42">
         Current device • Full Assembly No PCB
       </div>
+      <div className="pointer-events-none absolute inset-0 rounded-[2.4rem] ring-1 ring-inset ring-white/8" />
     </div>
   );
 }
