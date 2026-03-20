@@ -133,7 +133,7 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
 function ModelStage({ activeIndex }: { activeIndex: number }) {
   return (
     <div className="sticky top-24 flex h-[74vh] overflow-hidden items-center justify-center rounded-[2.4rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),rgba(255,255,255,0.02)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
-      <Canvas camera={{ position: [0, 0.9, 5.6], fov: 24 }} dpr={[1, 1.8]}>
+      <Canvas camera={{ position: [0.35, 0.72, 6.3], fov: 22 }} dpr={[1, 1.8]}>
         <ambientLight intensity={1} />
         <directionalLight position={[7, 9, 6]} intensity={2.4} color="#fff6de" />
         <directionalLight position={[-6, -2, 3]} intensity={0.85} color="#01c2c2" />
