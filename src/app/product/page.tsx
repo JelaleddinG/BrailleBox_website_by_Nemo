@@ -6,16 +6,16 @@ import { ProductScrollShowcase } from "@/components/product-scroll-showcase";
 const featurePanels = [
   {
     title: "A tactile learning surface",
-    body: "BrailleBox begins with the physical object itself. The top surface, spacing, and interaction all need to feel deliberate, tactile, and focused.",
+    body: "BrailleBox begins with the physical object itself. The top surface, spacing, and interaction are central to how the device is understood and used.",
     color: "bg-slate-950 text-white",
   },
   {
-    title: "A cleaner teacher view",
-    body: "The software side should not feel like a disconnected admin portal. It should feel like a continuation of the product experience — clear, useful, and immediate.",
+    title: "A clearer teacher view",
+    body: "The software side should continue the product story by helping educators understand progress more clearly and act with more confidence.",
     color: "bg-[var(--bb-dark-teal)] text-white",
   },
   {
-    title: "One learning loop",
+    title: "One connected learning loop",
     body: "Student interaction, teacher visibility, and school understanding should connect into one coherent system instead of separate fragments.",
     color: "bg-[var(--bb-orange)] text-white",
   },
@@ -36,9 +36,8 @@ export default function ProductPage() {
               Then the dashboard comes into view.
             </h2>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              The software should extend the product story. It should help
-              educators understand progress more clearly and act with more
-              confidence, without becoming another disconnected system.
+              The software should help educators understand progress more clearly
+              and act with more confidence, without becoming another disconnected system.
             </p>
           </div>
           <div className="mt-14 grid gap-12 lg:grid-cols-[.92fr_1.08fr] lg:items-center">

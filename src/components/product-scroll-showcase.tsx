@@ -1,42 +1,52 @@
 "use client";
 
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 const panels = [
   {
-    id: "shape",
-    eyebrow: "Form",
-    title: "The current BrailleBox, shown as the real object.",
+    id: "overview",
+    eyebrow: "Overview",
+    title: "The current BrailleBox, shown as the full device.",
     body:
-      "This page is built around the current device, not a future concept. The physical form is the starting point: what the learner touches, sees, and returns to.",
+      "Start with the whole object. This is the current BrailleBox, not a future concept. The goal here is simple: make the device readable before anything else happens.",
   },
   {
-    id: "interaction",
-    eyebrow: "Interaction",
-    title: "Built around tactile use, not abstract product talk.",
+    id: "input",
+    eyebrow: "Brailler-style input",
+    title: "Six-button input, centered as the main interaction point.",
     body:
-      "The geometry matters because Braille learning is physical. The top surface, spacing, and layout need to support repeated use, attention, and confidence.",
+      "The next move is to focus on the six-button Brailler-style input. That is where the interaction becomes clearer and the product starts to explain itself.",
   },
   {
-    id: "teacher",
-    eyebrow: "Teacher visibility",
-    title: "The hardware only matters if it leads to clearer teaching decisions.",
+    id: "detail",
+    eyebrow: "Braille detail",
+    title: "Then move closer to the labeled button detail.",
     body:
-      "BrailleBox is not just an object on a desk. It connects to a teacher-facing view that helps educators understand what is happening and where support is needed next.",
-  },
-  {
-    id: "system",
-    eyebrow: "System",
-    title: "One device. One dashboard. One clearer learning loop.",
-    body:
-      "Student interaction, teacher visibility, and school understanding should connect into one coherent system instead of scattered tools and manual guesswork.",
+      "The last view should feel tighter and more intentional. It brings attention to the tactile detail and reinforces that this is a device built around Braille interaction, not generic hardware.",
   },
 ];
+
+function CameraRig({ activeIndex }: { activeIndex: number }) {
+  const { camera } = useThree();
+
+  useFrame(() => {
+    const targets = [
+      { position: new THREE.Vector3(0, 0.9, 7.2), lookAt: new THREE.Vector3(0, 0, 0) },
+      { position: new THREE.Vector3(0.45, 0.35, 4.2), lookAt: new THREE.Vector3(0.3, -0.05, 0.15) },
+      { position: new THREE.Vector3(-0.35, 0.18, 2.8), lookAt: new THREE.Vector3(-0.15, -0.08, 0.22) },
+    ];
+
+    const target = targets[activeIndex] ?? targets[0];
+    camera.position.lerp(target.position, 0.05);
+    camera.lookAt(target.lookAt);
+  });
+
+  return null;
+}
 
 function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
   const geometry = useLoader(STLLoader, "/assets/current-braillebox-assembly.stl");
@@ -46,11 +56,11 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
   const material = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: ["#ffb84d", "#ffd700", "#01c2c2", "#ff8a65"][activeIndex] ?? "#ffd700",
-        metalness: 0.08,
-        roughness: 0.42,
-        clearcoat: 0.35,
-        clearcoatRoughness: 0.45,
+        color: ["#f5b14c", "#ffd45c", "#ff8a5b"][activeIndex] ?? "#ffd45c",
+        metalness: 0.06,
+        roughness: 0.46,
+        clearcoat: 0.26,
+        clearcoatRoughness: 0.44,
       }),
     [activeIndex],
   );
@@ -65,20 +75,21 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
 
   useFrame((state) => {
     if (!meshRef.current || !edgeRef.current) return;
-    const targetScale = [1.7, 1.35, 1.05, 0.88][activeIndex] ?? 1;
-    const targetRotY = [0.95, 0.48, 0.14, -0.18][activeIndex] ?? 0;
-    const targetRotX = [-0.72, -0.46, -0.3, -0.2][activeIndex] ?? -0.25;
+
+    const targetRotY = [0.7, 0.22, -0.08][activeIndex] ?? 0.5;
+    const targetRotX = [-0.52, -0.22, -0.1][activeIndex] ?? -0.3;
+    const targetScale = [1.22, 1.52, 1.95][activeIndex] ?? 1.2;
 
     meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, targetRotY, 0.055);
     meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, targetRotX, 0.055);
     edgeRef.current.rotation.y = meshRef.current.rotation.y;
     edgeRef.current.rotation.x = meshRef.current.rotation.x;
 
-    const scale = THREE.MathUtils.lerp(meshRef.current.scale.x, targetScale, 0.08);
+    const scale = THREE.MathUtils.lerp(meshRef.current.scale.x, targetScale, 0.07);
     meshRef.current.scale.setScalar(scale);
-    edgeRef.current.scale.setScalar(scale * 1.0025);
+    edgeRef.current.scale.setScalar(scale * 1.003);
 
-    const bob = Math.sin(state.clock.elapsedTime * 0.55) * 0.025;
+    const bob = Math.sin(state.clock.elapsedTime * 0.45) * 0.02;
     meshRef.current.position.y = bob;
     edgeRef.current.position.y = bob;
   });
@@ -87,7 +98,7 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
     <group>
       <mesh ref={meshRef} geometry={geometry} material={material} />
       <lineSegments ref={edgeRef} geometry={edges}>
-        <lineBasicMaterial color="#fff4c2" transparent opacity={0.35} />
+        <lineBasicMaterial color="#fff0c7" transparent opacity={0.28} />
       </lineSegments>
     </group>
   );
@@ -95,12 +106,13 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
 
 function ModelStage({ activeIndex }: { activeIndex: number }) {
   return (
-    <div className="sticky top-24 flex h-[72vh] items-center justify-center rounded-[2.4rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),rgba(255,255,255,0.02)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
-      <Canvas camera={{ position: [0, 0.9, 7.4], fov: 24 }} dpr={[1, 1.8]}>
-        <ambientLight intensity={0.95} />
-        <directionalLight position={[7, 9, 6]} intensity={2.4} color="#fff7e0" />
-        <directionalLight position={[-7, -3, 3]} intensity={1.1} color="#01c2c2" />
-        <directionalLight position={[0, 6, -6]} intensity={0.75} color="#ff6347" />
+    <div className="sticky top-24 flex h-[74vh] items-center justify-center rounded-[2.4rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),rgba(255,255,255,0.02)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
+      <Canvas camera={{ position: [0, 0.9, 7.2], fov: 24 }} dpr={[1, 1.8]}>
+        <ambientLight intensity={1} />
+        <directionalLight position={[7, 9, 6]} intensity={2.5} color="#fff6de" />
+        <directionalLight position={[-6, -2, 3]} intensity={0.95} color="#01c2c2" />
+        <directionalLight position={[0, 6, -6]} intensity={0.7} color="#ff6347" />
+        <CameraRig activeIndex={activeIndex} />
         <AssemblyMesh activeIndex={activeIndex} />
         <Environment preset="studio" />
       </Canvas>
@@ -108,77 +120,6 @@ function ModelStage({ activeIndex }: { activeIndex: number }) {
         Current device • Full Assembly No PCB
       </div>
     </div>
-  );
-}
-
-function TipHeroReveal() {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const node = containerRef.current;
-      if (!node) return;
-      const rect = node.getBoundingClientRect();
-      const total = Math.max(node.offsetHeight - window.innerHeight, 1);
-      const traveled = Math.min(Math.max(-rect.top, 0), total);
-      setProgress(traveled / total);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  const scale = 1.95 - progress * 1.08;
-  const translateY = progress * -58;
-  const opacity = 1 - progress * 0.88;
-
-  return (
-    <section ref={containerRef} className="relative h-[155vh] border-b border-black/6 bg-slate-950 text-white">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(1,194,194,0.22),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(255,99,71,0.16),transparent_22%)]" />
-        <div className="mx-auto flex h-full w-full max-w-7xl flex-col justify-between px-6 pt-18 pb-0 lg:px-10 lg:pt-24">
-          <div className="relative z-10 max-w-4xl" style={{ opacity: Math.max(0.25, 1 - progress * 0.7) }}>
-            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">Our Product</div>
-            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl">
-              The current BrailleBox,
-              <br />
-              coming into focus.
-            </h1>
-            <p className="mt-7 max-w-3xl text-lg leading-8 text-white/74 sm:text-xl">
-              Land on the tip of the device first. Then scroll into the rest of
-              the object, the interaction, and the system around it.
-            </p>
-          </div>
-
-          <div className="relative mt-auto h-[56vh] min-h-[420px] w-full">
-            <div
-              className="absolute inset-x-[-6%] bottom-[-34%] sm:bottom-[-42%] lg:inset-x-[-2%] lg:bottom-[-48%]"
-              style={{
-                transform: `translateY(${translateY}px) scale(${scale})`,
-                opacity,
-                transformOrigin: "center bottom",
-                transition: "transform 60ms linear, opacity 60ms linear",
-              }}
-            >
-              <Image
-                src="/assets/box-picture.png"
-                alt="BrailleBox tip reveal"
-                width={2600}
-                height={1600}
-                priority
-                className="h-auto w-full object-contain drop-shadow-[0_50px_110px_rgba(0,0,0,0.52)]"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -197,7 +138,7 @@ export function ProductScrollShowcase() {
             if (entry.isIntersecting) setActiveIndex(index);
           });
         },
-        { threshold: 0.55 },
+        { threshold: 0.58 },
       );
       observer.observe(node);
       observers.push(observer);
@@ -207,39 +148,50 @@ export function ProductScrollShowcase() {
   }, []);
 
   return (
-    <>
-      <TipHeroReveal />
-      <section className="border-b border-black/6 bg-slate-950 text-white">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="mt-2 grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:gap-14">
-            <ModelStage activeIndex={activeIndex} />
+    <section className="border-b border-black/6 bg-slate-950 text-white">
+      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        <div className="max-w-4xl">
+          <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">Our Product</div>
+          <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl">
+            The current BrailleBox,
+            <br />
+            in three clear views.
+          </h1>
+          <p className="mt-7 max-w-3xl text-lg leading-8 text-white/74 sm:text-xl">
+            First show the full device. Then move to the six-button input.
+            Then move closer to the Braille-labeled detail. The motion should
+            explain the product, not distract from it.
+          </p>
+        </div>
 
-            <div className="space-y-12">
-              {panels.map((panel, index) => (
-                <div
-                  key={panel.id}
-                  ref={(node) => {
-                    sectionRefs.current[index] = node;
-                  }}
-                  className={`min-h-[56vh] rounded-[2rem] border px-7 py-8 transition duration-500 lg:px-8 lg:py-10 ${
-                    activeIndex === index
-                      ? "border-white/22 bg-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.22)]"
-                      : "border-white/10 bg-white/[0.04]"
-                  }`}
-                >
-                  <div className="text-sm uppercase tracking-[0.22em] text-[var(--bb-yellow)]">
-                    {panel.eyebrow}
-                  </div>
-                  <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-                    {panel.title}
-                  </h2>
-                  <p className="mt-5 text-lg leading-8 text-white/72">{panel.body}</p>
+        <div className="mt-16 grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:gap-14">
+          <ModelStage activeIndex={activeIndex} />
+
+          <div className="space-y-12">
+            {panels.map((panel, index) => (
+              <div
+                key={panel.id}
+                ref={(node) => {
+                  sectionRefs.current[index] = node;
+                }}
+                className={`min-h-[62vh] rounded-[2rem] border px-7 py-8 transition duration-500 lg:px-8 lg:py-10 ${
+                  activeIndex === index
+                    ? "border-white/22 bg-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.22)]"
+                    : "border-white/10 bg-white/[0.04]"
+                }`}
+              >
+                <div className="text-sm uppercase tracking-[0.22em] text-[var(--bb-yellow)]">
+                  {panel.eyebrow}
                 </div>
-              ))}
-            </div>
+                <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+                  {panel.title}
+                </h2>
+                <p className="mt-5 text-lg leading-8 text-white/72">{panel.body}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
