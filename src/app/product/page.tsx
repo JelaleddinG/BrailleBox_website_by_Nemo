@@ -5,18 +5,18 @@ import { ProductScrollShowcase } from "@/components/product-scroll-showcase";
 
 const featurePanels = [
   {
-    title: "A tactile learning surface",
-    body: "The physical layout matters because Braille learning is tactile. The device has to be clear, usable, and consistent in the hand.",
+    title: "Built for tactile use",
+    body: "BrailleBox is meant to be understood through touch. The layout, spacing, and interaction all need to feel clear and consistent in the hand.",
     color: "bg-slate-950 text-white",
   },
   {
-    title: "A clearer teacher view",
-    body: "The dashboard should help educators understand progress and act more confidently, without pushing the work back into disconnected tools or manual notes.",
+    title: "Made for teacher visibility",
+    body: "The dashboard should help educators see progress more clearly, spot patterns sooner, and act with more confidence.",
     color: "bg-[var(--bb-dark-teal)] text-white",
   },
   {
-    title: "One connected learning loop",
-    body: "Student work, teacher insight, and school understanding should connect into one system instead of living in separate fragments.",
+    title: "Designed as one system",
+    body: "The device, the teacher view, and the learning loop should work together instead of living in separate fragments.",
     color: "bg-[var(--bb-orange)] text-white",
   },
 ];
@@ -31,13 +31,14 @@ export default function ProductPage() {
       <section className="border-b border-black/6 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
           <div className="max-w-3xl">
-            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Software layer</div>
+            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Teacher dashboard</div>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-              A teacher view that helps the device make more sense.
+              A clearer view of what is happening.
             </h2>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              The software should help educators understand progress more clearly,
-              spot patterns sooner, and respond with more confidence.
+              The software exists to make student progress easier to follow. It
+              should help educators understand what is changing, where support is
+              needed, and what to do next.
             </p>
           </div>
           <div className="mt-14 grid gap-12 lg:grid-cols-[.92fr_1.08fr] lg:items-center">
@@ -56,9 +57,9 @@ export default function ProductPage() {
       <section className="border-b border-black/6 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
           <div className="max-w-3xl">
-            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Product details</div>
+            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Why it works</div>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-              Built to work as one system.
+              Each part should make the rest stronger.
             </h2>
           </div>
           <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -75,11 +76,11 @@ export default function ProductPage() {
       <section className="brand-gradient text-white">
         <div className="mx-auto max-w-5xl px-6 py-24 text-center lg:px-10">
           <h2 className="text-4xl font-semibold tracking-[-0.05em] sm:text-6xl">
-            Hardware and software, working together.
+            One device. One dashboard. One clearer learning loop.
           </h2>
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-white/88">
-            BrailleBox is strongest when the device, the teacher view, and the
-            learning loop work as one connected experience.
+            BrailleBox is strongest when the physical device and the teacher view
+            work as one connected system.
           </p>
         </div>
       </section>
