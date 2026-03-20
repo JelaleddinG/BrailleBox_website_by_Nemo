@@ -96,7 +96,7 @@ export default function Home() {
               <span className="rounded-full bg-[var(--bb-yellow)]/18 px-4 py-2 text-slate-800">School insight</span>
             </div>
             <div className="mt-10">
-              <Link href="/product" className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--bb-dark-teal)]">
+              <Link href="/product" className="btn-primary">
                 See the full product story
               </Link>
             </div>
