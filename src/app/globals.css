@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
+  --bb-teal: #01c2c2;
+  --bb-dark-teal: #008080;
+  --bb-yellow: #ffd700;
+  --bb-orange: #ff6347;
 }
 
 @theme inline {
@@ -12,44 +16,30 @@
   --font-mono: var(--font-geist-mono);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; }
+::selection { background: var(--bb-dark-teal); color: white; }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-::selection {
-  background: rgba(15, 23, 42, 0.92);
-  color: white;
-}
-
-.hero-device-shell {
-  position: relative;
-}
-
+.hero-device-shell { position: relative; }
 .hero-device-shell::before {
   content: "";
   position: absolute;
   inset: -18%;
-  background: radial-gradient(circle, rgba(126, 211, 255, 0.22), transparent 48%);
+  background: radial-gradient(circle, rgba(1,194,194,0.22), transparent 48%);
   filter: blur(36px);
   z-index: -1;
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, var(--bb-dark-teal) 0%, var(--bb-teal) 58%, #dcfff8 100%);
+}
+
+.soft-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
