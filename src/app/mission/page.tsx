@@ -1,4 +1,5 @@
 import { DataBarChart, DotMatrix, StatGrid } from "@/components/data-viz";
+import { MissionImpactSlider } from "@/components/mission-impact-slider";
 import { PageHero } from "@/components/page-hero";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -79,6 +80,8 @@ export default function MissionPage() {
           </div>
         </div>
       </section>
+
+      <MissionImpactSlider />
 
       <section className="border-b border-black/6 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">

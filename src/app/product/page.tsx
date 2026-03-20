@@ -11,7 +11,7 @@ const featurePanels = [
   },
   {
     title: "A clearer teacher view",
-    body: "The dashboard should help educators understand progress and respond more confidently, without adding another disconnected workflow.",
+    body: "The dashboard should help educators understand progress and act more confidently, without pushing the work back into disconnected tools or manual notes.",
     color: "bg-[var(--bb-dark-teal)] text-white",
   },
   {
@@ -33,11 +33,11 @@ export default function ProductPage() {
           <div className="max-w-3xl">
             <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Software layer</div>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-              Then the dashboard comes into view.
+              A teacher view that helps the device make more sense.
             </h2>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              The software helps educators understand progress more clearly and
-              act sooner, without forcing everything back into manual tracking.
+              The software should help educators understand progress more clearly,
+              spot patterns sooner, and respond with more confidence.
             </p>
           </div>
           <div className="mt-14 grid gap-12 lg:grid-cols-[.92fr_1.08fr] lg:items-center">
@@ -79,7 +79,7 @@ export default function ProductPage() {
           </h2>
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-white/88">
             BrailleBox is strongest when the device, the teacher view, and the
-            learning loop make sense together.
+            learning loop work as one connected experience.
           </p>
         </div>
       </section>
