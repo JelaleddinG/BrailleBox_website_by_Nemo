@@ -9,18 +9,18 @@ export default async function LoginPage() {
   if (session) redirect("/dashboard");
 
   return (
-    <main className="min-h-screen bg-white text-slate-950">
+    <main className="min-h-screen bg-[linear-gradient(135deg,#07111d_0%,#008080_50%,#01c2c2_100%)] text-slate-950">
       <SiteHeader />
-      <section className="mx-auto max-w-4xl px-6 py-24 lg:px-10">
-        <div className="rounded-[2rem] border border-black/8 bg-[linear-gradient(135deg,#0f172a_0%,#008080_60%,#01c2c2_100%)] p-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
-          <div className="max-w-2xl">
+      <section className="mx-auto flex min-h-[calc(100vh-88px)] max-w-7xl items-center px-6 py-16 lg:px-10">
+        <div className="grid w-full gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+          <div className="text-white">
             <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">Teacher Login</div>
-            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em]">Access the BrailleBox dashboard.</h1>
-            <p className="mt-5 text-lg leading-8 text-white/82">
-              Log in to review student progress, monitor recent activity, and keep teaching decisions grounded in clearer information.
+            <h1 className="mt-4 text-6xl font-semibold tracking-[-0.06em]">Access the BrailleBox dashboard.</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/80">
+              Log in to monitor student progress, review recent activity, and keep teaching decisions grounded in clearer information.
             </p>
           </div>
-          <div className="mt-10 max-w-md rounded-[1.8rem] border border-white/10 bg-white/8 p-6 backdrop-blur">
+          <div className="rounded-[2rem] border border-white/10 bg-white/10 p-8 text-white shadow-[0_24px_80px_rgba(15,23,42,0.22)] backdrop-blur-xl">
             <LoginForm />
             <p className="mt-5 text-sm text-white/64">Demo access: test@test.edu / password</p>
           </div>

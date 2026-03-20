@@ -26,12 +26,34 @@ db.exec(`
     teacher_id TEXT NOT NULL,
     name TEXT NOT NULL,
     grade TEXT,
+    age INTEGER,
+    profile_summary TEXT,
+    strengths TEXT,
+    support_needs TEXT,
+    goals TEXT,
+    preferred_learning_style TEXT,
     progress_percent INTEGER DEFAULT 0,
     current_focus TEXT,
     recent_activity TEXT,
+    notes TEXT,
     FOREIGN KEY (teacher_id) REFERENCES teachers(id)
   );
 `);
+
+const studentColumns = db.prepare("PRAGMA table_info(students)").all() as Array<{ name: string }>;
+const existingColumns = new Set(studentColumns.map((c) => c.name));
+const extraColumns: Array<[string, string]> = [
+  ["age", "INTEGER"],
+  ["profile_summary", "TEXT"],
+  ["strengths", "TEXT"],
+  ["support_needs", "TEXT"],
+  ["goals", "TEXT"],
+  ["preferred_learning_style", "TEXT"],
+  ["notes", "TEXT"],
+];
+for (const [name, type] of extraColumns) {
+  if (!existingColumns.has(name)) db.exec(`ALTER TABLE students ADD COLUMN ${name} ${type};`);
+}
 
 const existingTeacher = db.prepare("SELECT id FROM teachers WHERE email = ?").get("test@test.edu") as { id?: string } | undefined;
 
@@ -51,16 +73,62 @@ if (!existingTeacher) {
   );
 
   const seedStudents = [
-    [crypto.randomUUID(), teacherId, "Ava", "Grade 2", 62, "Letter patterns", "Completed 3 dot-recognition exercises today"],
-    [crypto.randomUUID(), teacherId, "Noah", "Grade 4", 78, "Braille fluency", "Improved speed across guided reading session"],
-    [crypto.randomUUID(), teacherId, "Liam", "Grade 1", 41, "Dot recognition", "Needs reinforcement on lower cell combinations"],
+    {
+      id: crypto.randomUUID(),
+      teacher_id: teacherId,
+      name: "Ava",
+      grade: "Grade 2",
+      age: 7,
+      progress_percent: 62,
+      current_focus: "Letter patterns",
+      recent_activity: "Completed 3 dot-recognition exercises today",
+      profile_summary: "Ava is building confidence with early Braille patterns and responds well to repetition with clear tactile cues.",
+      strengths: "High engagement during guided exercises; strong recognition of familiar patterns.",
+      support_needs: "Needs reinforcement when moving from recognition to independent recall.",
+      goals: "Improve consistency across letter recognition and guided reading tasks.",
+      preferred_learning_style: "Short guided sessions with repeated tactile practice.",
+      notes: "Responds well to praise and structured repetition.",
+    },
+    {
+      id: crypto.randomUUID(),
+      teacher_id: teacherId,
+      name: "Noah",
+      grade: "Grade 4",
+      age: 10,
+      progress_percent: 78,
+      current_focus: "Braille fluency",
+      recent_activity: "Improved speed across guided reading session",
+      profile_summary: "Noah is progressing toward stronger reading fluency and benefits from timed practice with immediate feedback.",
+      strengths: "Strong motivation and good retention across repeated sessions.",
+      support_needs: "Needs pacing support when accuracy drops under time pressure.",
+      goals: "Increase fluency while maintaining reading accuracy.",
+      preferred_learning_style: "Timed fluency work with visible progress milestones.",
+      notes: "Engages more deeply when goals are explicit and measurable.",
+    },
+    {
+      id: crypto.randomUUID(),
+      teacher_id: teacherId,
+      name: "Liam",
+      grade: "Grade 1",
+      age: 6,
+      progress_percent: 41,
+      current_focus: "Dot recognition",
+      recent_activity: "Needs reinforcement on lower cell combinations",
+      profile_summary: "Liam is in an early stage of Braille recognition and benefits from short, highly supported tactile sessions.",
+      strengths: "Curious and willing to try new exercises with support.",
+      support_needs: "Needs repeated exposure to lower cell combinations and slower pacing.",
+      goals: "Build a stronger foundation in dot recognition and early combinations.",
+      preferred_learning_style: "Short sessions with simple tactile repetition and immediate correction.",
+      notes: "Progress improves when distractions are minimized.",
+    },
   ];
 
   const insertStudent = db.prepare(
-    `INSERT INTO students (id, teacher_id, name, grade, progress_percent, current_focus, recent_activity) VALUES (?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO students (id, teacher_id, name, grade, age, progress_percent, current_focus, recent_activity, profile_summary, strengths, support_needs, goals, preferred_learning_style, notes)
+     VALUES (@id, @teacher_id, @name, @grade, @age, @progress_percent, @current_focus, @recent_activity, @profile_summary, @strengths, @support_needs, @goals, @preferred_learning_style, @notes)`
   );
 
-  for (const student of seedStudents) insertStudent.run(...student);
+  for (const student of seedStudents) insertStudent.run(student);
 }
 
 export { db };

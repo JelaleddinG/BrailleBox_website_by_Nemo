@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -10,8 +11,9 @@ export default async function DashboardPage() {
   if (!session) redirect("/login");
 
   const students = db
-    .prepare("SELECT name, grade, progress_percent, current_focus, recent_activity FROM students WHERE teacher_id = ? ORDER BY name")
+    .prepare("SELECT id, name, grade, progress_percent, current_focus, recent_activity FROM students WHERE teacher_id = ? ORDER BY name")
     .all(session.id) as Array<{
+      id: string;
       name: string;
       grade?: string;
       progress_percent: number;
@@ -35,7 +37,10 @@ export default async function DashboardPage() {
               Review student progress, recent activity, and where support is needed next.
             </p>
           </div>
-          <LogoutButton />
+          <div className="flex gap-3">
+            <Link href="/dashboard/students/new" className="btn-primary">New student</Link>
+            <LogoutButton />
+          </div>
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -63,7 +68,7 @@ export default async function DashboardPage() {
 
           <div className="mt-8 grid gap-5">
             {students.map((student) => (
-              <div key={student.name} className="rounded-[1.6rem] border border-black/8 p-6">
+              <Link key={student.id} href={`/dashboard/students/${student.id}`} className="rounded-[1.6rem] border border-black/8 p-6 transition hover:-translate-y-[2px] hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div>
                     <h3 className="text-2xl font-semibold tracking-[-0.03em]">{student.name}</h3>
@@ -89,7 +94,7 @@ export default async function DashboardPage() {
                     <div className="mt-2 text-sm leading-7 text-slate-700">{student.recent_activity || "No recent activity recorded"}</div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
