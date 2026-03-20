@@ -41,7 +41,7 @@ export function RegisterForm() {
       <input value={form.organization} onChange={(e) => setForm({ ...form, organization: e.target.value })} placeholder="Organization" className="w-full rounded-2xl border border-white/12 bg-white/95 px-4 py-3 text-slate-950 outline-none" required />
       <div className="flex overflow-hidden rounded-2xl border border-white/12 bg-white/95">
         <input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} type={showPassword ? 'text' : 'password'} placeholder="Password" className="w-full px-4 py-3 text-slate-950 outline-none" required />
-        <button type="button" onClick={() => setShowPassword((v) => !v)} className="px-4 text-slate-500">{showPassword ? '🙈' : '👁️'}</button>
+        <button type="button" onClick={() => setShowPassword((v) => !v)} className="px-4 text-slate-500 text-lg">{showPassword ? '−' : '+'}</button>
       </div>
       {error ? <div className="text-sm text-[#ffd3cb]">{error}</div> : null}
       {message ? <div className="text-sm text-white/78">{message}</div> : null}

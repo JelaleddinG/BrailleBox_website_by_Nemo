@@ -100,7 +100,7 @@ if (!existingTeacher) {
   const passwordHash = bcrypt.hashSync("password", 10);
 
   db.prepare(
-    `INSERT INTO teachers (id, name, email, password_hash, school, organization, role, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO teachers (id, name, email, password_hash, school, organization, role, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, 1)`
   ).run(
     teacherId,
     "Demo Teacher",
@@ -109,7 +109,6 @@ if (!existingTeacher) {
     "Sherlock Center Pilot",
     "Sherlock Center",
     "Teacher of the Visually Impaired",
-    1,
   );
 
   const seedStudents = [

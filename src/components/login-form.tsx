@@ -56,8 +56,8 @@ export function LoginForm() {
             className="w-full px-4 py-3 text-slate-950 outline-none"
             required
           />
-          <button type="button" onClick={() => setShowPassword((v) => !v)} className="px-4 text-slate-500">
-            {showPassword ? "🙈" : "👁️"}
+          <button type="button" onClick={() => setShowPassword((v) => !v)} className="px-4 text-slate-500 text-lg">
+            {showPassword ? "−" : "+"}
           </button>
         </div>
       </div>
