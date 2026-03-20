@@ -1,14 +1,21 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AIProfileButton } from "@/components/dashboard/ai-profile-button";
+import { DeviceConnectButton } from "@/components/dashboard/device-connect-button";
+import { ExerciseCategories } from "@/components/dashboard/exercise-categories";
 
 export default async function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
   if (!session) redirect('/login');
   const { id } = await params;
+
+  const columns = new Set((db.prepare("PRAGMA table_info(students)").all() as Array<{ name: string }>).map((c) => c.name));
+  if (!columns.has("device_connected")) db.exec("ALTER TABLE students ADD COLUMN device_connected INTEGER DEFAULT 0;");
+  if (!columns.has("device_name")) db.exec("ALTER TABLE students ADD COLUMN device_name TEXT;");
 
   const student = db
     .prepare(`SELECT * FROM students WHERE id = ? AND teacher_id = ?`)
@@ -27,6 +34,8 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
         goals?: string;
         preferred_learning_style?: string;
         notes?: string;
+        device_connected?: number;
+        device_name?: string;
       }
     | undefined;
 
@@ -42,7 +51,11 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
             <h1 className="mt-3 text-5xl font-semibold tracking-[-0.05em]">{student.name}</h1>
             <p className="mt-4 text-lg leading-8 text-slate-600">{student.grade || 'Student'}{student.age ? ` • Age ${student.age}` : ''}</p>
           </div>
-          <AIProfileButton studentId={student.id} />
+          <div className="flex flex-wrap gap-3">
+            <Link href="/dashboard" className="btn-dark">Back to dashboard</Link>
+            <DeviceConnectButton studentId={student.id} connected={Boolean(student.device_connected)} deviceName={student.device_name} />
+            <AIProfileButton studentId={student.id} />
+          </div>
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -59,6 +72,8 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
             <div className="mt-3 text-base leading-7 text-slate-700">{student.recent_activity || 'No recent activity yet'}</div>
           </div>
         </div>
+
+        <ExerciseCategories />
 
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           <div className="rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
