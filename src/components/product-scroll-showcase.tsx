@@ -12,21 +12,45 @@ const panels = [
     eyebrow: "Overview",
     title: "The current BrailleBox, shown as the full device.",
     body:
-      "Start with the whole object. This is the current BrailleBox, not a future concept. The goal here is simple: make the device readable before anything else happens.",
+      "Start with the whole object. This is the current BrailleBox, not a future concept. The goal here is to make the device readable before anything else happens.",
   },
   {
     id: "input",
     eyebrow: "Brailler-style input",
     title: "Six-button input, centered as the main interaction point.",
     body:
-      "The next move is to focus on the six-button Brailler-style input. That is where the interaction becomes clearer and the product starts to explain itself.",
+      "The second view focuses on the six-button Brailler-style input. That is where the interaction becomes clearer and the product starts to explain itself.",
   },
   {
     id: "detail",
     eyebrow: "Braille detail",
     title: "Then move closer to the labeled button detail.",
     body:
-      "The last view should feel tighter and more intentional. It brings attention to the tactile detail and reinforces that this is a device built around Braille interaction, not generic hardware.",
+      "The last view moves in with restraint. It should bring attention to tactile detail without losing the device entirely or turning the model into a color block.",
+  },
+];
+
+const CAMERA_STATES = [
+  {
+    position: new THREE.Vector3(0, 0.9, 5.6),
+    lookAt: new THREE.Vector3(0, 0, 0),
+    rotation: new THREE.Euler(-0.28, 0.46, 0),
+    scale: 1,
+    color: "#f4b24d",
+  },
+  {
+    position: new THREE.Vector3(0.18, 0.55, 4.9),
+    lookAt: new THREE.Vector3(0.12, -0.05, 0.18),
+    rotation: new THREE.Euler(-0.16, 0.22, 0),
+    scale: 1.03,
+    color: "#ffd45c",
+  },
+  {
+    position: new THREE.Vector3(-0.08, 0.42, 4.3),
+    lookAt: new THREE.Vector3(-0.02, -0.08, 0.26),
+    rotation: new THREE.Euler(-0.1, 0.06, 0),
+    scale: 1.08,
+    color: "#ff966b",
   },
 ];
 
@@ -34,14 +58,8 @@ function CameraRig({ activeIndex }: { activeIndex: number }) {
   const { camera } = useThree();
 
   useFrame(() => {
-    const targets = [
-      { position: new THREE.Vector3(0, 1.2, 11.8), lookAt: new THREE.Vector3(0, 0, 0) },
-      { position: new THREE.Vector3(0.18, 0.82, 10.2), lookAt: new THREE.Vector3(0.16, -0.02, 0.06) },
-      { position: new THREE.Vector3(-0.1, 0.72, 9.1), lookAt: new THREE.Vector3(-0.06, -0.04, 0.1) },
-    ];
-
-    const target = targets[activeIndex] ?? targets[0];
-    camera.position.lerp(target.position, 0.05);
+    const target = CAMERA_STATES[activeIndex] ?? CAMERA_STATES[0];
+    camera.position.lerp(target.position, 0.06);
     camera.lookAt(target.lookAt);
   });
 
@@ -50,55 +68,63 @@ function CameraRig({ activeIndex }: { activeIndex: number }) {
 
 function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
   const geometry = useLoader(STLLoader, "/assets/current-braillebox-assembly.stl");
+  const groupRef = useRef<THREE.Group>(null);
   const meshRef = useRef<THREE.Mesh>(null);
   const edgeRef = useRef<THREE.LineSegments>(null);
 
   const material = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: ["#f5b14c", "#ffd45c", "#ff8a5b"][activeIndex] ?? "#ffd45c",
-        metalness: 0.06,
-        roughness: 0.46,
-        clearcoat: 0.26,
-        clearcoatRoughness: 0.44,
+        color: CAMERA_STATES[activeIndex]?.color ?? "#ffd45c",
+        metalness: 0.05,
+        roughness: 0.5,
+        clearcoat: 0.18,
+        clearcoatRoughness: 0.48,
       }),
     [activeIndex],
   );
 
-  const edges = useMemo(() => new THREE.EdgesGeometry(geometry, 35), [geometry]);
+  const normalizedGeometry = useMemo(() => {
+    const cloned = geometry.clone();
+    cloned.computeBoundingBox();
+    const box = cloned.boundingBox;
+    if (!box) return cloned;
 
-  useEffect(() => {
-    geometry.computeBoundingBox();
-    geometry.center();
-    geometry.computeVertexNormals();
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const maxDim = Math.max(size.x, size.y, size.z) || 1;
+    const scale = 2.35 / maxDim;
+
+    cloned.translate(-center.x, -center.y, -center.z);
+    cloned.scale(scale, scale, scale);
+    cloned.computeVertexNormals();
+    cloned.computeBoundingBox();
+    cloned.center();
+    return cloned;
   }, [geometry]);
 
+  const edges = useMemo(() => new THREE.EdgesGeometry(normalizedGeometry, 32), [normalizedGeometry]);
+
   useFrame((state) => {
-    if (!meshRef.current || !edgeRef.current) return;
+    if (!groupRef.current || !meshRef.current || !edgeRef.current) return;
+    const target = CAMERA_STATES[activeIndex] ?? CAMERA_STATES[0];
 
-    const targetRotY = [0.62, 0.18, -0.04][activeIndex] ?? 0.45;
-    const targetRotX = [-0.42, -0.18, -0.08][activeIndex] ?? -0.24;
-    const targetScale = [0.98, 1.16, 1.34][activeIndex] ?? 1;
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, target.rotation.x, 0.06);
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, target.rotation.y, 0.06);
 
-    meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, targetRotY, 0.055);
-    meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, targetRotX, 0.055);
-    edgeRef.current.rotation.y = meshRef.current.rotation.y;
-    edgeRef.current.rotation.x = meshRef.current.rotation.x;
+    const scale = THREE.MathUtils.lerp(groupRef.current.scale.x, target.scale, 0.05);
+    groupRef.current.scale.setScalar(scale);
 
-    const scale = THREE.MathUtils.lerp(meshRef.current.scale.x, targetScale, 0.07);
-    meshRef.current.scale.setScalar(scale);
-    edgeRef.current.scale.setScalar(scale * 1.003);
-
-    const bob = Math.sin(state.clock.elapsedTime * 0.45) * 0.02;
-    meshRef.current.position.y = bob;
-    edgeRef.current.position.y = bob;
+    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.45) * 0.018;
   });
 
   return (
-    <group>
-      <mesh ref={meshRef} geometry={geometry} material={material} />
+    <group ref={groupRef}>
+      <mesh ref={meshRef} geometry={normalizedGeometry} material={material} />
       <lineSegments ref={edgeRef} geometry={edges}>
-        <lineBasicMaterial color="#fff0c7" transparent opacity={0.28} />
+        <lineBasicMaterial color="#fff2cf" transparent opacity={0.22} />
       </lineSegments>
     </group>
   );
@@ -106,12 +132,12 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
 
 function ModelStage({ activeIndex }: { activeIndex: number }) {
   return (
-    <div className="sticky top-24 flex h-[74vh] items-center justify-center rounded-[2.4rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),rgba(255,255,255,0.02)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
-      <Canvas camera={{ position: [0, 1.1, 9.8], fov: 24 }} dpr={[1, 1.8]}>
+    <div className="sticky top-24 flex h-[74vh] overflow-hidden items-center justify-center rounded-[2.4rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),rgba(255,255,255,0.02)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
+      <Canvas camera={{ position: [0, 0.9, 5.6], fov: 24 }} dpr={[1, 1.8]}>
         <ambientLight intensity={1} />
-        <directionalLight position={[7, 9, 6]} intensity={2.5} color="#fff6de" />
-        <directionalLight position={[-6, -2, 3]} intensity={0.95} color="#01c2c2" />
-        <directionalLight position={[0, 6, -6]} intensity={0.7} color="#ff6347" />
+        <directionalLight position={[7, 9, 6]} intensity={2.4} color="#fff6de" />
+        <directionalLight position={[-6, -2, 3]} intensity={0.85} color="#01c2c2" />
+        <directionalLight position={[0, 6, -6]} intensity={0.55} color="#ff6347" />
         <CameraRig activeIndex={activeIndex} />
         <AssemblyMesh activeIndex={activeIndex} />
         <Environment preset="studio" />
