@@ -12,22 +12,22 @@ const navItems = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[rgba(3,8,20,0.72)] backdrop-blur-2xl">
+    <header className="sticky top-0 z-50 border-b border-[rgba(255,255,255,0.14)] bg-[linear-gradient(90deg,rgba(0,128,128,0.92),rgba(1,194,194,0.84),rgba(0,128,128,0.92))] backdrop-blur-2xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-10">
         <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/6 p-2">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/18 bg-white/10 p-2 shadow-[0_8px_24px_rgba(0,0,0,0.15)]">
             <Image
-              src="/assets/icon-bw.png"
+              src="/assets/icon-color.png"
               alt="BrailleBox icon"
-              width={40}
-              height={40}
-              className="h-6 w-6 object-contain"
+              width={44}
+              height={44}
+              className="h-7 w-7 object-contain"
               priority
             />
           </div>
-          <span className="text-base font-semibold tracking-[-0.03em] text-white">BrailleBox</span>
+          <span className="text-base font-semibold tracking-[-0.03em] text-white drop-shadow-sm">BrailleBox</span>
         </Link>
-        <nav className="hidden items-center gap-7 text-sm font-medium text-white/82 lg:flex">
+        <nav className="hidden items-center gap-7 text-sm font-medium text-white/92 lg:flex">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} className="transition hover:text-[var(--bb-yellow)]">
               {item.label}
@@ -36,7 +36,7 @@ export function SiteHeader() {
         </nav>
         <Link
           href="/contact"
-          className="inline-flex items-center justify-center rounded-full bg-[var(--bb-orange)] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--bb-dark-teal)]"
+          className="inline-flex items-center justify-center rounded-full bg-[var(--bb-orange)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(255,99,71,0.28)] transition hover:bg-slate-950"
         >
           Request Early Access
         </Link>

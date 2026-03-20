@@ -2,25 +2,22 @@ import Image from "next/image";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
-const hardwareMoments = [
+const featurePanels = [
   {
-    title: "Tactile by design",
-    body: "BrailleBox is meant to feel intentional in the hand: focused, durable, and built around the physical reality of Braille learning.",
+    title: "A tactile learning surface",
+    body: "BrailleBox begins with the physical object itself. The top surface, spacing, and interaction all need to feel deliberate, tactile, and focused.",
+    color: "bg-slate-950 text-white",
   },
   {
-    title: "Designed to command attention",
-    body: "The product should not feel like a compromise. It should feel like serious technology made for serious learning.",
+    title: "A cleaner teacher view",
+    body: "The software side should not feel like a disconnected admin portal. It should feel like a continuation of the product experience — clear, useful, and immediate.",
+    color: "bg-[var(--bb-dark-teal)] text-white",
   },
   {
-    title: "Built for repeated classroom use",
-    body: "A strong product experience matters because students and educators have to want to come back to it again and again.",
+    title: "One learning loop",
+    body: "Student interaction, teacher visibility, and school understanding should connect into one coherent system instead of separate fragments.",
+    color: "bg-[var(--bb-orange)] text-white",
   },
-];
-
-const softwareMoments = [
-  "Teacher-facing visibility into student progress",
-  "A clearer signal on what is being practiced and where support is needed next",
-  "A connected system that turns interaction into understanding",
 ];
 
 export default function ProductPage() {
@@ -29,27 +26,33 @@ export default function ProductPage() {
       <SiteHeader />
 
       <section className="relative overflow-hidden bg-slate-950 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(1,194,194,0.20),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(255,99,71,0.18),transparent_24%)]" />
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[.9fr_1.1fr] lg:px-10 lg:py-28">
-          <div className="relative z-10 max-w-2xl">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(1,194,194,0.22),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(255,99,71,0.18),transparent_24%)]" />
+        <div className="mx-auto flex min-h-[88vh] max-w-7xl flex-col justify-between px-6 py-16 lg:px-10 lg:py-24">
+          <div className="max-w-4xl">
             <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">Our Product</div>
             <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl">
-              Hardware and software,
+              Start with the tip.
               <br />
-              built as one experience.
+              Then reveal the system.
             </h1>
-            <p className="mt-7 text-lg leading-8 text-white/74 sm:text-xl">
-              BrailleBox is a tactile learning device paired with a teacher-facing
-              dashboard. The vision is not just to look better. It is to make the
-              full learning loop feel sharper, clearer, and more powerful as you
-              move from student interaction to teacher understanding.
+            <p className="mt-7 max-w-3xl text-lg leading-8 text-white/74 sm:text-xl">
+              BrailleBox should feel like a serious product from the first glance.
+              A precise tactile object in front. A cleaner software layer behind it.
+              And a product story that unfolds as you keep moving.
             </p>
           </div>
-          <div className="relative z-10 flex items-center justify-center lg:justify-end">
-            <div className="hero-device-shell w-full max-w-3xl rounded-[2.8rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_40px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:p-6">
-              <div className="rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.03))] p-6 sm:p-8">
-                <Image src="/assets/device-alt.png" alt="BrailleBox product hero" width={1600} height={1200} priority className="h-auto w-full object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.4)]" />
-              </div>
+
+          <div className="mt-10 flex justify-center">
+            <div className="relative w-full max-w-5xl">
+              <div className="absolute inset-x-[18%] top-[18%] h-40 rounded-full bg-[radial-gradient(circle,rgba(1,194,194,0.24),transparent_66%)] blur-3xl" />
+              <Image
+                src="/assets/box-picture.png"
+                alt="BrailleBox product tip-forward hero"
+                width={2200}
+                height={1400}
+                priority
+                className="relative z-10 h-auto w-full object-contain drop-shadow-[0_35px_80px_rgba(0,0,0,0.45)]"
+              />
             </div>
           </div>
         </div>
@@ -58,49 +61,53 @@ export default function ProductPage() {
       <section className="border-b border-black/6 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
           <div className="max-w-3xl">
-            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Hardware</div>
+            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Hardware focus</div>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-              The product should feel premium before it says a word.
+              Zoom out. The object starts to speak for itself.
             </h2>
+            <p className="mt-6 text-lg leading-8 text-slate-600">
+              The product page should feel like discovery. First the detail. Then
+              the shape. Then the system. BrailleBox should be presented as an
+              object with intention, not just a tool dropped onto a page.
+            </p>
           </div>
-          <div className="mt-14 grid gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+          <div className="mt-14 grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
             <div className="rounded-[2rem] border border-black/8 bg-[#f5fffe] p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
-              <Image src="/assets/device-detail.png" alt="BrailleBox close-up detail" width={1800} height={1400} className="w-full rounded-[1.5rem] object-cover" />
+              <Image src="/assets/device-alt.png" alt="BrailleBox full product reveal" width={1800} height={1400} className="w-full rounded-[1.5rem] object-cover" />
             </div>
-            <div className="grid gap-5">
-              {hardwareMoments.map((item) => (
-                <div key={item.title} className="rounded-[1.8rem] border border-black/8 bg-white p-7 shadow-[0_12px_35px_rgba(15,23,42,0.05)]">
-                  <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">{item.title}</h3>
-                  <p className="mt-3 text-base leading-7 text-slate-600">{item.body}</p>
-                </div>
-              ))}
+            <div className="rounded-[2rem] border border-black/8 bg-white p-8 shadow-[0_12px_35px_rgba(15,23,42,0.05)]">
+              <h3 className="text-3xl font-semibold tracking-[-0.04em] text-slate-950">A tactile form built around learning.</h3>
+              <p className="mt-5 text-lg leading-8 text-slate-600">
+                BrailleBox should feel premium, focused, and durable. Not flashy.
+                Not toy-like. Not “good enough for accessibility.” Just good.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       <section className="border-b border-black/6 bg-[#f7fbfb]">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-[.95fr_1.05fr] lg:px-10 lg:items-center">
-          <div>
-            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-orange)]">Software</div>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-              A dashboard that turns activity into insight.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-slate-600">
-              The software side of BrailleBox is about giving teachers a stronger
-              view into what is happening, not just storing data in another dead
-              interface. The point is clarity.
-            </p>
-            <div className="mt-8 space-y-4">
-              {softwareMoments.map((moment) => (
-                <div key={moment} className="rounded-[1.4rem] border border-black/8 bg-white px-5 py-4 text-base leading-7 text-slate-700">
-                  {moment}
-                </div>
-              ))}
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+          <div className="grid gap-12 lg:grid-cols-[.92fr_1.08fr] lg:items-center">
+            <div>
+              <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-orange)]">Software layer</div>
+              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
+                Then the dashboard comes into view.
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-slate-600">
+                The software should extend the product story. It is not there to
+                clutter the experience. It is there to help educators understand
+                progress more clearly and act with more confidence.
+              </p>
+              <div className="mt-8 space-y-4 text-base leading-7 text-slate-700">
+                <p>• clearer teacher visibility</p>
+                <p>• stronger signal from student interaction</p>
+                <p>• less friction between learning and understanding</p>
+              </div>
             </div>
-          </div>
-          <div className="rounded-[2rem] border border-black/8 bg-white p-5 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
-            <Image src="/assets/dashboard.webp" alt="BrailleBox teacher dashboard" width={1600} height={1200} className="w-full rounded-[1.5rem] object-cover" />
+            <div className="rounded-[2rem] border border-black/8 bg-white p-5 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
+              <Image src="/assets/dashboard.webp" alt="BrailleBox teacher dashboard" width={1600} height={1200} className="w-full rounded-[1.5rem] object-cover" />
+            </div>
           </div>
         </div>
       </section>
@@ -108,33 +115,18 @@ export default function ProductPage() {
       <section className="border-b border-black/6 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
           <div className="max-w-3xl">
-            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">One system</div>
+            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Product details</div>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-              The real story is the loop between them.
+              Detail by detail, the full story emerges.
             </h2>
-            <p className="mt-6 text-lg leading-8 text-slate-600">
-              BrailleBox matters when the device and the dashboard stop feeling
-              separate. The student interacts. The teacher understands. The school
-              gets a clearer picture. That is the experience we are building
-              toward.
-            </p>
           </div>
           <div className="mt-14 grid gap-6 md:grid-cols-3">
-            <div className="rounded-[2rem] bg-slate-950 p-8 text-white shadow-[0_20px_60px_rgba(2,6,23,0.16)]">
-              <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">01</div>
-              <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">Student practice</h3>
-              <p className="mt-4 text-base leading-7 text-white/72">Tactile interaction that feels intentional and engaging.</p>
-            </div>
-            <div className="rounded-[2rem] bg-[var(--bb-dark-teal)] p-8 text-white shadow-[0_20px_60px_rgba(0,128,128,0.18)]">
-              <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">02</div>
-              <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">Teacher visibility</h3>
-              <p className="mt-4 text-base leading-7 text-white/78">A clearer view of progress, patterns, and what to do next.</p>
-            </div>
-            <div className="rounded-[2rem] bg-[var(--bb-orange)] p-8 text-white shadow-[0_20px_60px_rgba(255,99,71,0.18)]">
-              <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">03</div>
-              <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">School understanding</h3>
-              <p className="mt-4 text-base leading-7 text-white/82">A stronger signal around Braille learning and instructional progress.</p>
-            </div>
+            {featurePanels.map((panel) => (
+              <div key={panel.title} className={`rounded-[2rem] p-8 shadow-[0_20px_60px_rgba(15,23,42,0.10)] ${panel.color}`}>
+                <h3 className="text-2xl font-semibold tracking-[-0.03em]">{panel.title}</h3>
+                <p className="mt-4 text-base leading-7 text-white/80">{panel.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -142,11 +134,11 @@ export default function ProductPage() {
       <section className="brand-gradient text-white">
         <div className="mx-auto max-w-5xl px-6 py-24 text-center lg:px-10">
           <h2 className="text-4xl font-semibold tracking-[-0.05em] sm:text-6xl">
-            Still early. Already serious.
+            This should feel like a reveal, not a brochure.
           </h2>
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-white/88">
-            BrailleBox is being shaped through real feedback, real pilots, and a
-            product standard that refuses to treat accessibility like an afterthought.
+            The direction is clear now: fewer generic blocks, more product theater,
+            stronger detail, and a better sense of progression as the page unfolds.
           </p>
         </div>
       </section>
