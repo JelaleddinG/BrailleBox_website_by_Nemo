@@ -32,6 +32,9 @@ export function MissionImpactSlider() {
                 <span className="text-sm uppercase tracking-[0.2em] text-white/56">Students supported</span>
                 <span className="text-3xl font-semibold tracking-[-0.04em] text-[var(--bb-yellow)]">{students}</span>
               </div>
+              <p className="mt-4 text-sm leading-7 text-white/62">
+                Move the slider to imagine what happens as more students are supported inside a clearer learning system.
+              </p>
               <input
                 type="range"
                 min={20}
@@ -52,6 +55,9 @@ export function MissionImpactSlider() {
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.05] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.22)]">
               <div className="text-sm uppercase tracking-[0.2em] text-white/56">Teachers with clearer visibility</div>
               <div className="mt-3 text-5xl font-semibold tracking-[-0.05em] text-[var(--bb-yellow)]">{derived.teachers}</div>
+              <p className="mt-4 text-sm leading-7 text-white/62">
+                A simple representation of how many teachers could be working with clearer, more usable information as the system reaches more students.
+              </p>
               <div className="mt-5 h-3 overflow-hidden rounded-full bg-white/10">
                 <div className="h-full rounded-full bg-gradient-to-r from-[var(--bb-yellow)] to-[var(--bb-orange)]" style={{ width: `${Math.min(100, (derived.teachers / 84) * 100)}%` }} />
               </div>
@@ -60,6 +66,9 @@ export function MissionImpactSlider() {
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.05] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.22)]">
               <div className="text-sm uppercase tracking-[0.2em] text-white/56">Reporting burden reduced</div>
               <div className="mt-3 text-5xl font-semibold tracking-[-0.05em] text-[var(--bb-teal)]">{derived.reports}%</div>
+              <p className="mt-4 text-sm leading-7 text-white/62">
+                A conceptual estimate of how much manual reporting burden can drop when progress becomes easier to follow inside the system.
+              </p>
               <div className="mt-5 h-3 overflow-hidden rounded-full bg-white/10">
                 <div className="h-full rounded-full bg-gradient-to-r from-[var(--bb-dark-teal)] to-[var(--bb-teal)]" style={{ width: `${derived.reports}%` }} />
               </div>
@@ -68,6 +77,9 @@ export function MissionImpactSlider() {
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.05] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.22)]">
               <div className="text-sm uppercase tracking-[0.2em] text-white/56">Learning visibility</div>
               <div className="mt-3 text-5xl font-semibold tracking-[-0.05em] text-[var(--bb-blue)]">{derived.visibility}%</div>
+              <p className="mt-4 text-sm leading-7 text-white/62">
+                A simple way to represent how much easier it becomes to see what students are doing, how they are progressing, and where support is needed next.
+              </p>
               <div className="mt-5 grid grid-cols-10 gap-2">
                 {Array.from({ length: 10 }).map((_, i) => (
                   <div
