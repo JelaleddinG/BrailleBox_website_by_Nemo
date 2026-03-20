@@ -19,10 +19,10 @@ export function SiteFooter() {
             Explore
           </div>
           <div className="mt-4 flex flex-col gap-3 text-sm text-slate-700">
-            <Link href="/tvis">TVIs</Link>
-            <Link href="/schools">Schools</Link>
-            <Link href="/parents">Parents</Link>
-            <Link href="/product">Our Product</Link>
+            <Link href="/tvis" className="footer-link">TVIs</Link>
+            <Link href="/schools" className="footer-link">Schools</Link>
+            <Link href="/parents" className="footer-link">Parents</Link>
+            <Link href="/product" className="footer-link">Our Product</Link>
           </div>
         </div>
         <div>

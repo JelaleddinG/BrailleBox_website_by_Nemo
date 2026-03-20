@@ -116,7 +116,7 @@ export default function Home() {
             <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">Support better Braille outcomes.</h3>
             <p className="mt-4 text-base leading-7 text-slate-600">A stronger learning system for districts and schools that want better visibility and support.</p>
           </Link>
-          <Link href="/parents" className="rounded-[2rem] border border-black/8 bg-white p-8 shadow-[0_12px_35px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5">
+          <Link href="/parents" className="feature-link-card">
             <div className="text-sm uppercase tracking-[0.2em] text-slate-600">For Parents</div>
             <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">Follow the mission.</h3>
             <p className="mt-4 text-base leading-7 text-slate-600">See how BrailleBox is helping push accessible literacy toward a better future.</p>
