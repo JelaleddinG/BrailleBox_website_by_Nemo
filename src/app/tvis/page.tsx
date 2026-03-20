@@ -1,3 +1,4 @@
+import { DataBarChart, DotMatrix, StatGrid } from "@/components/data-viz";
 import { PageHero } from "@/components/page-hero";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -17,6 +18,12 @@ const tviStats = [
   },
 ];
 
+const caseloadData = [
+  { label: "Lower itinerant caseload", value: 8, tone: "teal" as const },
+  { label: "Upper itinerant caseload", value: 20, tone: "orange" as const },
+  { label: "Massachusetts ratio claim", value: 194, tone: "yellow" as const, note: "pending verification" },
+];
+
 export default function TVIsPage() {
   return (
     <main className="min-h-screen bg-white text-slate-950">
@@ -28,13 +35,25 @@ export default function TVIsPage() {
       />
       <section className="border-b border-black/6 bg-[#f8fbfb]">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="grid gap-6 md:grid-cols-3">
-            {tviStats.map((stat) => (
-              <div key={stat.value} className="rounded-[2rem] border border-black/8 bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.05)]">
-                <div className="text-5xl font-semibold tracking-[-0.05em] text-[var(--bb-dark-teal)]">{stat.value}</div>
-                <p className="mt-4 text-base leading-7 text-slate-600">{stat.label}</p>
-              </div>
-            ))}
+          <StatGrid items={tviStats} accent="teal" />
+        </div>
+      </section>
+      <section className="border-b border-black/6 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+          <div className="grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+            <DataBarChart
+              title="Caseload pressure"
+              subtitle="The lower and upper itinerant ranges come from BrailleBox strategy research. The Massachusetts ratio shown here is still being verified."
+              data={caseloadData}
+              suffix=""
+            />
+            <DotMatrix
+              title="Vacancy pressure"
+              subtitle="A 30–40% vacancy range means a significant share of the field may be unfilled, leaving remaining educators with more pressure."
+              filled={9}
+              total={25}
+              tone="orange"
+            />
           </div>
         </div>
       </section>

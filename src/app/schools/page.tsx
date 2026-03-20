@@ -1,3 +1,4 @@
+import { DataBarChart, DotMatrix, StatGrid } from "@/components/data-viz";
 import { PageHero } from "@/components/page-hero";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -17,6 +18,12 @@ const schoolStats = [
   },
 ];
 
+const districtBars = [
+  { label: "Per-pupil VI support spending (MA claim)", value: 1841, tone: "orange" as const, note: "pending verification" },
+  { label: "Student-to-TVI ratio (MA claim)", value: 194, tone: "yellow" as const, note: "pending verification" },
+  { label: "New England VI students (claim)", value: 4800, tone: "blue" as const, note: "from strategy report" },
+];
+
 export default function SchoolsPage() {
   return (
     <main className="min-h-screen bg-white text-slate-950">
@@ -28,13 +35,24 @@ export default function SchoolsPage() {
       />
       <section className="border-b border-black/6 bg-[#f8fbfb]">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="grid gap-6 md:grid-cols-3">
-            {schoolStats.map((stat) => (
-              <div key={stat.value} className="rounded-[2rem] border border-black/8 bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.05)]">
-                <div className="text-5xl font-semibold tracking-[-0.05em] text-[var(--bb-orange)]">{stat.value}</div>
-                <p className="mt-4 text-base leading-7 text-slate-600">{stat.label}</p>
-              </div>
-            ))}
+          <StatGrid items={schoolStats} accent="orange" />
+        </div>
+      </section>
+      <section className="border-b border-black/6 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+          <div className="grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+            <DataBarChart
+              title="District pressure points"
+              subtitle="These New England and Massachusetts-specific figures come from BrailleBox strategy research and remain under source verification before final publication."
+              data={districtBars}
+            />
+            <DotMatrix
+              title="Budget timing matters"
+              subtitle="If districts decide early for the following school year, missing the budget window creates a long delay before another purchase cycle opens."
+              filled={10}
+              total={20}
+              tone="orange"
+            />
           </div>
         </div>
       </section>

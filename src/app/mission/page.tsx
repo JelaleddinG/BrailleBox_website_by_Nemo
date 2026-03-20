@@ -1,3 +1,4 @@
+import { DataBarChart, DotMatrix, StatGrid } from "@/components/data-viz";
 import { PageHero } from "@/components/page-hero";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -15,6 +16,12 @@ const globalStats = [
     value: "$411B",
     label: "estimated annual global productivity loss linked to vision impairment",
   },
+];
+
+const burdenBars = [
+  { label: "Total global vision impairment", value: 2200, tone: "blue" as const, note: "millions of people" },
+  { label: "Preventable or unaddressed cases", value: 1000, tone: "orange" as const, note: "millions of people" },
+  { label: "Annual productivity loss", value: 411, tone: "yellow" as const, note: "US$ billions" },
 ];
 
 const problemBlocks = [
@@ -44,18 +51,36 @@ export default function MissionPage() {
 
       <section className="border-b border-black/6 bg-slate-950 text-white">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="grid gap-6 md:grid-cols-3">
-            {globalStats.map((stat) => (
-              <div key={stat.value} className="rounded-[2rem] border border-white/10 bg-white/[0.05] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
-                <div className="text-5xl font-semibold tracking-[-0.05em] text-[var(--bb-yellow)]">{stat.value}</div>
-                <p className="mt-4 text-base leading-7 text-white/76">{stat.label}</p>
-              </div>
-            ))}
-          </div>
+          <StatGrid items={globalStats} accent="yellow" />
         </div>
       </section>
 
       <section className="border-b border-black/6 bg-[#f8fbfb]">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+          <div className="max-w-3xl">
+            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Global scale</div>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl">
+              The numbers are big enough to demand better systems.
+            </h2>
+          </div>
+          <div className="mt-14 grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+            <DataBarChart
+              title="Global burden at a glance"
+              subtitle="Based on WHO blindness and vision impairment data."
+              data={burdenBars}
+            />
+            <DotMatrix
+              title="Rough visual of unaddressed burden"
+              subtitle="Out of every 25 units here, roughly 11 represent preventable or still-unaddressed cases within the larger global total."
+              filled={11}
+              total={25}
+              tone="orange"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-black/6 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
           <div className="max-w-3xl">
             <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Why this matters</div>
