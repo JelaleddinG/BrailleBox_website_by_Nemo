@@ -107,9 +107,11 @@ img { max-width: 100%; height: auto; }
   box-shadow: 0 10px 24px rgba(255, 255, 255, 0.12);
 }
 .btn-light:hover {
-  background: #ffffff;
+  background: var(--bb-yellow);
   color: #0f172a;
+  border-color: var(--bb-yellow);
   transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(255, 215, 0, 0.28);
 }
 
 .nav-link {
@@ -125,6 +127,15 @@ img { max-width: 100%; height: auto; }
 .footer-link:hover {
   color: var(--bb-dark-teal);
   transform: translateX(2px);
+}
+
+.auth-link {
+  color: var(--bb-yellow);
+  transition: color 160ms ease, opacity 160ms ease;
+}
+.auth-link:hover {
+  color: var(--bb-teal);
+  opacity: 0.9;
 }
 
 .feature-link-card {
