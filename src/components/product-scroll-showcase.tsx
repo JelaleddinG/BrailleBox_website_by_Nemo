@@ -32,11 +32,11 @@ const panels = [
 
 const CAMERA_STATES = [
   {
-    position: new THREE.Vector3(0, 0.9, 5.6),
-    lookAt: new THREE.Vector3(0, 0, 0),
-    rotation: new THREE.Euler(-0.28, 0.46, 0),
-    scale: 1,
-    color: "#f4b24d",
+    position: new THREE.Vector3(0.42, 0.72, 6.3),
+    lookAt: new THREE.Vector3(-0.18, -0.18, 0.04),
+    rotation: new THREE.Euler(0.1, -1.57, 0),
+    scale: 0.96,
+    color: "#57b7d9",
   },
   {
     position: new THREE.Vector3(0.18, 0.55, 4.9),
@@ -133,7 +133,7 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
 function ModelStage({ activeIndex }: { activeIndex: number }) {
   return (
     <div className="sticky top-24 flex h-[74vh] overflow-hidden items-center justify-center rounded-[2.4rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),rgba(255,255,255,0.02)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
-      <Canvas camera={{ position: [0.35, 0.72, 6.3], fov: 22 }} dpr={[1, 1.8]}>
+      <Canvas camera={{ position: [0.42, 0.72, 6.3], fov: 22 }} dpr={[1, 1.8]}>
         <ambientLight intensity={1} />
         <directionalLight position={[7, 9, 6]} intensity={2.4} color="#fff6de" />
         <directionalLight position={[-6, -2, 3]} intensity={0.85} color="#01c2c2" />
