@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getSession } from "@/lib/auth";
 
 const navItems = [
   { href: "/tvis", label: "TVIs" },
@@ -11,7 +12,9 @@ const navItems = [
   { href: "/contact", label: "Contact Us" },
 ];
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const session = await getSession();
+
   return (
     <header className="sticky top-0 z-50 border-b border-[rgba(255,255,255,0.14)] bg-[linear-gradient(90deg,rgba(0,128,128,0.92),rgba(1,194,194,0.84),rgba(0,128,128,0.92))] backdrop-blur-2xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-10">
@@ -35,9 +38,11 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <Link href="/login" className="btn-primary">
-          Login
-        </Link>
+        {session ? (
+          <Link href="/dashboard" className="btn-primary">Dashboard</Link>
+        ) : (
+          <Link href="/login" className="btn-primary">Login</Link>
+        )}
       </div>
     </header>
   );

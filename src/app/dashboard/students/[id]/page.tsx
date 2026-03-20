@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { AIProfileButton } from "@/components/dashboard/ai-profile-button";
 import { DeviceConnectButton } from "@/components/dashboard/device-connect-button";
 import { ExerciseCategories } from "@/components/dashboard/exercise-categories";
+import { ActivityVisual } from "@/components/dashboard/activity-visual";
 
 export default async function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
@@ -18,6 +19,10 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
   if (!columns.has("device_name")) db.exec("ALTER TABLE students ADD COLUMN device_name TEXT;");
   if (!columns.has("device_serial")) db.exec("ALTER TABLE students ADD COLUMN device_serial TEXT;");
   if (!columns.has("device_mac")) db.exec("ALTER TABLE students ADD COLUMN device_mac TEXT;");
+  if (!columns.has("last_exercise_title")) db.exec("ALTER TABLE students ADD COLUMN last_exercise_title TEXT;");
+  if (!columns.has("last_exercise_category")) db.exec("ALTER TABLE students ADD COLUMN last_exercise_category TEXT;");
+  if (!columns.has("last_exercise_score")) db.exec("ALTER TABLE students ADD COLUMN last_exercise_score INTEGER DEFAULT 0;");
+  if (!columns.has("activity_visual")) db.exec("ALTER TABLE students ADD COLUMN activity_visual TEXT;");
 
   const student = db
     .prepare(`SELECT * FROM students WHERE id = ? AND teacher_id = ?`)
@@ -40,6 +45,7 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
         device_name?: string;
         device_serial?: string;
         device_mac?: string;
+        activity_visual?: string;
       }
     | undefined;
 
@@ -97,7 +103,8 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
           </div>
         ) : null}
 
-        <ExerciseCategories />
+        <ExerciseCategories studentId={student.id} connected={Boolean(student.device_connected)} />
+        <ActivityVisual visual={student.activity_visual} />
 
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           <div className="rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
