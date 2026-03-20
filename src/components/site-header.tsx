@@ -15,18 +15,21 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[rgba(3,8,20,0.72)] backdrop-blur-2xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-10">
         <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/assets/brand-logo-alt.webp"
-            alt="BrailleBox"
-            width={154}
-            height={42}
-            className="h-9 w-auto"
-            priority
-          />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/6 p-2">
+            <Image
+              src="/assets/icon-bw.png"
+              alt="BrailleBox icon"
+              width={40}
+              height={40}
+              className="h-6 w-6 object-contain"
+              priority
+            />
+          </div>
+          <span className="text-base font-semibold tracking-[-0.03em] text-white">BrailleBox</span>
         </Link>
         <nav className="hidden items-center gap-7 text-sm font-medium text-white/82 lg:flex">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className="transition hover:text-white">
+            <Link key={item.href} href={item.href} className="transition hover:text-[var(--bb-yellow)]">
               {item.label}
             </Link>
           ))}
