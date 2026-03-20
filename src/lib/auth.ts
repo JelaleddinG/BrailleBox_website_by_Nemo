@@ -14,14 +14,19 @@ export type TeacherSession = {
   role?: string;
 };
 
+export function generateVerificationCode() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
 export async function verifyTeacher(email: string, password: string): Promise<TeacherSession | null> {
   const teacher = db
-    .prepare("SELECT id, email, name, school, role, password_hash FROM teachers WHERE email = ?")
+    .prepare("SELECT id, email, name, school, role, password_hash, is_verified FROM teachers WHERE email = ?")
     .get(email) as
-    | { id: string; email: string; name: string; school?: string; role?: string; password_hash: string }
+    | { id: string; email: string; name: string; school?: string; role?: string; password_hash: string; is_verified: number }
     | undefined;
 
   if (!teacher) return null;
+  if (!teacher.is_verified) throw new Error("Please verify your email before logging in.");
   const valid = await bcrypt.compare(password, teacher.password_hash);
   if (!valid) return null;
 

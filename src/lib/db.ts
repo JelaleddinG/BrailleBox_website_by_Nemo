@@ -17,8 +17,20 @@ db.exec(`
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     school TEXT,
+    organization TEXT,
     role TEXT DEFAULT 'Teacher of the Visually Impaired',
+    is_verified INTEGER DEFAULT 0,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS verification_codes (
+    id TEXT PRIMARY KEY,
+    teacher_id TEXT NOT NULL,
+    email TEXT NOT NULL,
+    code TEXT NOT NULL,
+    expires_at TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (teacher_id) REFERENCES teachers(id)
   );
 
   CREATE TABLE IF NOT EXISTS students (
@@ -36,9 +48,27 @@ db.exec(`
     current_focus TEXT,
     recent_activity TEXT,
     notes TEXT,
+    device_connected INTEGER DEFAULT 0,
+    device_name TEXT,
+    device_serial TEXT,
+    device_mac TEXT,
+    last_exercise_title TEXT,
+    last_exercise_category TEXT,
+    last_exercise_score INTEGER DEFAULT 0,
+    activity_visual TEXT,
     FOREIGN KEY (teacher_id) REFERENCES teachers(id)
   );
 `);
+
+const teacherColumns = db.prepare("PRAGMA table_info(teachers)").all() as Array<{ name: string }>;
+const teacherColumnSet = new Set(teacherColumns.map((c) => c.name));
+const teacherExtras: Array<[string, string]> = [
+  ["organization", "TEXT"],
+  ["is_verified", "INTEGER DEFAULT 0"],
+];
+for (const [name, type] of teacherExtras) {
+  if (!teacherColumnSet.has(name)) db.exec(`ALTER TABLE teachers ADD COLUMN ${name} ${type};`);
+}
 
 const studentColumns = db.prepare("PRAGMA table_info(students)").all() as Array<{ name: string }>;
 const existingColumns = new Set(studentColumns.map((c) => c.name));
@@ -50,6 +80,14 @@ const extraColumns: Array<[string, string]> = [
   ["goals", "TEXT"],
   ["preferred_learning_style", "TEXT"],
   ["notes", "TEXT"],
+  ["device_connected", "INTEGER DEFAULT 0"],
+  ["device_name", "TEXT"],
+  ["device_serial", "TEXT"],
+  ["device_mac", "TEXT"],
+  ["last_exercise_title", "TEXT"],
+  ["last_exercise_category", "TEXT"],
+  ["last_exercise_score", "INTEGER DEFAULT 0"],
+  ["activity_visual", "TEXT"],
 ];
 for (const [name, type] of extraColumns) {
   if (!existingColumns.has(name)) db.exec(`ALTER TABLE students ADD COLUMN ${name} ${type};`);
@@ -62,14 +100,16 @@ if (!existingTeacher) {
   const passwordHash = bcrypt.hashSync("password", 10);
 
   db.prepare(
-    `INSERT INTO teachers (id, name, email, password_hash, school, role) VALUES (?, ?, ?, ?, ?, ?)`
+    `INSERT INTO teachers (id, name, email, password_hash, school, organization, role, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
   ).run(
     teacherId,
     "Demo Teacher",
     "test@test.edu",
     passwordHash,
     "Sherlock Center Pilot",
+    "Sherlock Center",
     "Teacher of the Visually Impaired",
+    1,
   );
 
   const seedStudents = [
