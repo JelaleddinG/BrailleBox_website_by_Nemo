@@ -53,10 +53,10 @@ export default function Home() {
               a clearer view of progress.
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Link href="/contact" className="inline-flex items-center justify-center rounded-full bg-[var(--bb-orange)] px-7 py-4 text-sm font-semibold text-white transition hover:bg-[var(--bb-dark-teal)]">
+              <Link href="/contact" className="btn-primary">
                 Request Early Access
               </Link>
-              <Link href="/product" className="inline-flex items-center justify-center rounded-full border border-white/12 bg-white/6 px-7 py-4 text-sm font-semibold text-white transition hover:bg-white/10">
+              <Link href="/product" className="btn-secondary">
                 Explore Our Product
               </Link>
             </div>
