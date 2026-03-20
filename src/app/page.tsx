@@ -26,7 +26,7 @@ export default function Home() {
       <section className="relative overflow-hidden bg-slate-950 text-white">
         <div className="soft-grid absolute inset-0 opacity-30" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(1,194,194,0.22),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(255,99,71,0.18),transparent_24%)]" />
-        <div className="mx-auto grid min-h-[88vh] max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-[1fr_1.05fr] lg:px-10 lg:py-24">
+        <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-start px-6 pt-16 pb-0 lg:px-10 lg:pt-24">
           <div className="relative z-10 max-w-3xl">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-sm text-white/72 backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-[var(--bb-yellow)]" />
@@ -52,11 +52,16 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative z-10 flex items-center justify-center lg:justify-end">
-            <div className="hero-device-shell w-full max-w-2xl rounded-[2.75rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_40px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:p-6">
-              <div className="rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.03))] p-6 sm:p-8">
-                <Image src="/assets/device.jpg" alt="BrailleBox device" width={1400} height={1100} priority className="h-auto w-full object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.4)]" />
-              </div>
+          <div className="pointer-events-none relative mt-auto h-[34vh] min-h-[280px] w-full sm:h-[40vh] lg:h-[46vh]">
+            <div className="absolute inset-x-[-8%] bottom-[-18%] sm:bottom-[-24%] lg:inset-x-[-12%] lg:bottom-[-34%]">
+              <Image
+                src="/assets/box-picture.png"
+                alt="BrailleBox device hero"
+                width={2600}
+                height={1600}
+                priority
+                className="h-auto w-full object-cover drop-shadow-[0_40px_90px_rgba(0,0,0,0.48)]"
+              />
             </div>
           </div>
         </div>
@@ -85,13 +90,13 @@ export default function Home() {
             </h2>
             <p className="mt-6 text-lg leading-8 text-slate-600">
               BrailleBox combines a tactile learning device with connected teacher
-              visibility. The goal is simple: better practice for students,
-              better insight for educators, and a stronger signal for schools.
+              visibility. The result is a clearer learning loop for students,
+              educators, and schools.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 text-sm font-medium">
               <span className="rounded-full bg-[var(--bb-teal)]/12 px-4 py-2 text-[var(--bb-dark-teal)]">Braille learning</span>
-              <span className="rounded-full bg-[var(--bb-orange)]/12 px-4 py-2 text-[var(--bb-orange)]">Teacher workflow</span>
-              <span className="rounded-full bg-[var(--bb-yellow)]/18 px-4 py-2 text-slate-800">School visibility</span>
+              <span className="rounded-full bg-[var(--bb-orange)]/12 px-4 py-2 text-[var(--bb-orange)]">Teacher visibility</span>
+              <span className="rounded-full bg-[var(--bb-yellow)]/18 px-4 py-2 text-slate-800">School insight</span>
             </div>
             <div className="mt-10">
               <Link href="/product" className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--bb-dark-teal)]">

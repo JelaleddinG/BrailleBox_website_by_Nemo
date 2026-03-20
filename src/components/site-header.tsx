@@ -15,13 +15,13 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-[rgba(255,255,255,0.14)] bg-[linear-gradient(90deg,rgba(0,128,128,0.92),rgba(1,194,194,0.84),rgba(0,128,128,0.92))] backdrop-blur-2xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-10">
         <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/18 bg-white/10 p-2 shadow-[0_8px_24px_rgba(0,0,0,0.15)]">
+          <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-white/18 bg-white/10 p-0 shadow-[0_8px_24px_rgba(0,0,0,0.15)]">
             <Image
               src="/assets/icon-color.png"
               alt="BrailleBox icon"
-              width={44}
-              height={44}
-              className="h-7 w-7 object-contain"
+              fill
+              sizes="44px"
+              className="object-cover scale-[0.9]"
               priority
             />
           </div>
