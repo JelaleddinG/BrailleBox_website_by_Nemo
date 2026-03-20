@@ -34,10 +34,7 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <Link
-          href="/contact"
-          className="inline-flex items-center justify-center rounded-full bg-[var(--bb-orange)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(255,99,71,0.28)] transition hover:bg-slate-950"
-        >
+        <Link href="/contact" className="btn-primary">
           Request Early Access
         </Link>
       </div>
