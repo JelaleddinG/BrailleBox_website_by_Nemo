@@ -21,7 +21,7 @@ export function SiteHeader() {
               alt="BrailleBox icon"
               fill
               sizes="44px"
-              className="object-cover scale-[1.28]"
+              className="object-cover scale-[1.16]"
               priority
             />
           </div>
