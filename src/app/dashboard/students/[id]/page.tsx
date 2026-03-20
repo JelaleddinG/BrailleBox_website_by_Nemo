@@ -16,6 +16,8 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
   const columns = new Set((db.prepare("PRAGMA table_info(students)").all() as Array<{ name: string }>).map((c) => c.name));
   if (!columns.has("device_connected")) db.exec("ALTER TABLE students ADD COLUMN device_connected INTEGER DEFAULT 0;");
   if (!columns.has("device_name")) db.exec("ALTER TABLE students ADD COLUMN device_name TEXT;");
+  if (!columns.has("device_serial")) db.exec("ALTER TABLE students ADD COLUMN device_serial TEXT;");
+  if (!columns.has("device_mac")) db.exec("ALTER TABLE students ADD COLUMN device_mac TEXT;");
 
   const student = db
     .prepare(`SELECT * FROM students WHERE id = ? AND teacher_id = ?`)
@@ -36,6 +38,8 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
         notes?: string;
         device_connected?: number;
         device_name?: string;
+        device_serial?: string;
+        device_mac?: string;
       }
     | undefined;
 
@@ -58,7 +62,7 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
           </div>
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-10 grid gap-6 md:grid-cols-4">
           <div className="rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
             <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Progress</div>
             <div className="mt-3 text-5xl font-semibold tracking-[-0.05em] text-[var(--bb-orange)]">{student.progress_percent}%</div>
@@ -68,10 +72,30 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
             <div className="mt-3 text-xl font-semibold tracking-[-0.03em] text-slate-950">{student.current_focus || 'Not set yet'}</div>
           </div>
           <div className="rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
+            <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Device</div>
+            <div className="mt-3 text-base leading-7 text-slate-700">{student.device_connected ? student.device_name || 'BrailleBox connected' : 'Not connected yet'}</div>
+          </div>
+          <div className="rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
             <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Recent activity</div>
             <div className="mt-3 text-base leading-7 text-slate-700">{student.recent_activity || 'No recent activity yet'}</div>
           </div>
         </div>
+
+        {student.device_connected ? (
+          <div className="mt-6 rounded-[2rem] bg-white p-6 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
+            <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Connected device details</div>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              <div className="rounded-[1.2rem] bg-[#f8fbfb] p-4 text-sm leading-7 text-slate-700">
+                <div className="text-xs uppercase tracking-[0.18em] text-slate-500">Device name</div>
+                <div className="mt-2">{student.device_name || 'BrailleBox'}</div>
+              </div>
+              <div className="rounded-[1.2rem] bg-[#f8fbfb] p-4 text-sm leading-7 text-slate-700">
+                <div className="text-xs uppercase tracking-[0.18em] text-slate-500">Serial / MAC</div>
+                <div className="mt-2">{student.device_serial || 'Unknown serial'}{student.device_mac ? ` • ${student.device_mac}` : ''}</div>
+              </div>
+            </div>
+          </div>
+        ) : null}
 
         <ExerciseCategories />
 
