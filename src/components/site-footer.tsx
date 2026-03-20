@@ -23,6 +23,7 @@ export function SiteFooter() {
             <Link href="/schools" className="footer-link">Schools</Link>
             <Link href="/parents" className="footer-link">Parents</Link>
             <Link href="/product" className="footer-link">Our Product</Link>
+            <Link href="/mission" className="footer-link">Mission</Link>
           </div>
         </div>
         <div>
