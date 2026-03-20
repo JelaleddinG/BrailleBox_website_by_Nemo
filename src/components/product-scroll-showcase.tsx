@@ -35,9 +35,9 @@ function CameraRig({ activeIndex }: { activeIndex: number }) {
 
   useFrame(() => {
     const targets = [
-      { position: new THREE.Vector3(0, 0.9, 7.2), lookAt: new THREE.Vector3(0, 0, 0) },
-      { position: new THREE.Vector3(0.45, 0.35, 4.2), lookAt: new THREE.Vector3(0.3, -0.05, 0.15) },
-      { position: new THREE.Vector3(-0.35, 0.18, 2.8), lookAt: new THREE.Vector3(-0.15, -0.08, 0.22) },
+      { position: new THREE.Vector3(0, 1.1, 9.8), lookAt: new THREE.Vector3(0, 0, 0) },
+      { position: new THREE.Vector3(0.3, 0.55, 7.1), lookAt: new THREE.Vector3(0.22, -0.03, 0.12) },
+      { position: new THREE.Vector3(-0.22, 0.34, 5.8), lookAt: new THREE.Vector3(-0.1, -0.06, 0.18) },
     ];
 
     const target = targets[activeIndex] ?? targets[0];
@@ -76,9 +76,9 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
   useFrame((state) => {
     if (!meshRef.current || !edgeRef.current) return;
 
-    const targetRotY = [0.7, 0.22, -0.08][activeIndex] ?? 0.5;
-    const targetRotX = [-0.52, -0.22, -0.1][activeIndex] ?? -0.3;
-    const targetScale = [1.22, 1.52, 1.95][activeIndex] ?? 1.2;
+    const targetRotY = [0.62, 0.18, -0.04][activeIndex] ?? 0.45;
+    const targetRotX = [-0.42, -0.18, -0.08][activeIndex] ?? -0.24;
+    const targetScale = [0.98, 1.16, 1.34][activeIndex] ?? 1;
 
     meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, targetRotY, 0.055);
     meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, targetRotX, 0.055);
@@ -107,7 +107,7 @@ function AssemblyMesh({ activeIndex }: { activeIndex: number }) {
 function ModelStage({ activeIndex }: { activeIndex: number }) {
   return (
     <div className="sticky top-24 flex h-[74vh] items-center justify-center rounded-[2.4rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),rgba(255,255,255,0.02)_48%,transparent_72%)] shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
-      <Canvas camera={{ position: [0, 0.9, 7.2], fov: 24 }} dpr={[1, 1.8]}>
+      <Canvas camera={{ position: [0, 1.1, 9.8], fov: 24 }} dpr={[1, 1.8]}>
         <ambientLight intensity={1} />
         <directionalLight position={[7, 9, 6]} intensity={2.5} color="#fff6de" />
         <directionalLight position={[-6, -2, 3]} intensity={0.95} color="#01c2c2" />
