@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "BrailleBox",
     description:
-      "A premium Braille learning system designed for students, teachers, and schools.",
+      "A Braille learning system designed for students, teachers, and schools.",
     url: "https://www.braille-box.com",
     siteName: "BrailleBox",
     images: [

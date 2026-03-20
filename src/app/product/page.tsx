@@ -43,7 +43,7 @@ export default function ProductPage() {
           </div>
 
           <div className="mt-10 flex justify-center">
-            <div className="relative w-full max-w-5xl">
+            <div className="relative w-full max-w-6xl">
               <div className="absolute inset-x-[18%] top-[18%] h-40 rounded-full bg-[radial-gradient(circle,rgba(1,194,194,0.24),transparent_66%)] blur-3xl" />
               <Image
                 src="/assets/box-picture.png"
@@ -72,13 +72,13 @@ export default function ProductPage() {
             </p>
           </div>
           <div className="mt-14 grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
-            <div className="rounded-[2rem] border border-black/8 bg-[#f5fffe] p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
-              <Image src="/assets/device-alt.png" alt="BrailleBox full product reveal" width={1800} height={1400} className="w-full rounded-[1.5rem] object-cover" />
+            <div className="p-0 shadow-none">
+              <Image src="/assets/device-alt.png" alt="BrailleBox full product reveal" width={1800} height={1400} className="w-full object-contain drop-shadow-[0_30px_70px_rgba(15,23,42,0.16)]" />
             </div>
             <div className="rounded-[2rem] border border-black/8 bg-white p-8 shadow-[0_12px_35px_rgba(15,23,42,0.05)]">
               <h3 className="text-3xl font-semibold tracking-[-0.04em] text-slate-950">A tactile form built around learning.</h3>
               <p className="mt-5 text-lg leading-8 text-slate-600">
-                BrailleBox should feel premium, focused, and durable. Not flashy.
+                BrailleBox should feel focused, durable, and intentional. Not flashy.
                 Not toy-like. Not “good enough for accessibility.” Just good.
               </p>
             </div>

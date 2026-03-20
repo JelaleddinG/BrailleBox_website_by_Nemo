@@ -9,7 +9,7 @@ export function SiteFooter() {
             BrailleBox
           </h3>
           <p className="mt-4 max-w-md text-sm leading-7 text-slate-600">
-            A premium Braille learning system designed to help visually impaired
+            A Braille learning system designed to help visually impaired
             students, educators, and schools work with better tools and better
             visibility.
           </p>

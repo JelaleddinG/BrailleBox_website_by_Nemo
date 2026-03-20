@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 const featureCards = [
   {
     title: "Braille learning, made tangible",
-    body: "A tactile product experience designed to feel premium, focused, and worthy of the students using it.",
+    body: "A tactile product experience designed to feel focused, refined, and worthy of the students using it.",
   },
   {
     title: "Built for teacher visibility",
@@ -24,23 +24,33 @@ export default function Home() {
       <SiteHeader />
 
       <section className="relative overflow-hidden bg-slate-950 text-white">
-        <div className="soft-grid absolute inset-0 opacity-30" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(1,194,194,0.22),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(255,99,71,0.18),transparent_24%)]" />
-        <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-start px-6 pt-16 pb-0 lg:px-10 lg:pt-24">
+        <picture className="absolute inset-0 block h-full w-full">
+          <source media="(max-width: 767px)" srcSet="/assets/home-hero-mobile.webp" type="image/webp" />
+          <source media="(min-width: 768px)" srcSet="/assets/home-hero.webp" type="image/webp" />
+          <img
+            src="/assets/home-hero.webp"
+            alt="Finger touching the BrailleBox device"
+            className="h-full w-full object-cover object-center"
+          />
+        </picture>
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(1,194,194,0.18),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(255,99,71,0.14),transparent_24%)]" />
+
+        <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-center px-6 py-16 lg:px-10 lg:py-24">
           <div className="relative z-10 max-w-3xl">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-sm text-white/72 backdrop-blur">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-sm text-white/78 backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-[var(--bb-yellow)]" />
-              Premium assistive technology for Braille learning
+              Braille learning for students, educators, and schools
             </div>
             <h1 className="text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl">
               Braille education,
               <br />
               built like it matters.
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/72 sm:text-xl">
-              BrailleBox is a premium hardware and software system helping
-              visually impaired students learn Braille while giving educators and
-              schools a clearer view of progress.
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/78 sm:text-xl">
+              BrailleBox is a hardware and software system helping visually
+              impaired students learn Braille while giving educators and schools
+              a clearer view of progress.
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link href="/contact" className="inline-flex items-center justify-center rounded-full bg-[var(--bb-orange)] px-7 py-4 text-sm font-semibold text-white transition hover:bg-[var(--bb-dark-teal)]">
@@ -49,19 +59,6 @@ export default function Home() {
               <Link href="/product" className="inline-flex items-center justify-center rounded-full border border-white/12 bg-white/6 px-7 py-4 text-sm font-semibold text-white transition hover:bg-white/10">
                 Explore Our Product
               </Link>
-            </div>
-          </div>
-
-          <div className="pointer-events-none relative mt-auto h-[34vh] min-h-[280px] w-full sm:h-[40vh] lg:h-[46vh]">
-            <div className="absolute inset-x-[-8%] bottom-[-18%] sm:bottom-[-24%] lg:inset-x-[-12%] lg:bottom-[-34%]">
-              <Image
-                src="/assets/box-picture.png"
-                alt="BrailleBox device hero"
-                width={2600}
-                height={1600}
-                priority
-                className="h-auto w-full object-cover drop-shadow-[0_40px_90px_rgba(0,0,0,0.48)]"
-              />
             </div>
           </div>
         </div>
