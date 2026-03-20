@@ -12,21 +12,21 @@ const panels = [
     eyebrow: "Overview",
     title: "The current BrailleBox, shown as the full device.",
     body:
-      "Start with the whole object. This is the current BrailleBox, not a future concept. The goal here is to make the device readable before anything else happens.",
+      "Start with the whole device. This is the current BrailleBox, not a future concept. The first view should make the form readable before anything else happens.",
   },
   {
     id: "input",
     eyebrow: "Brailler-style input",
-    title: "Six-button input, centered as the main interaction point.",
+    title: "Six-button input, shown as the main interaction point.",
     body:
-      "The second view focuses on the six-button Brailler-style input. That is where the interaction becomes clearer and the product starts to explain itself.",
+      "The second view moves closer to the six-button Brailler-style input. That is where the interaction becomes clearer and the device starts to explain itself.",
   },
   {
     id: "detail",
     eyebrow: "Braille detail",
     title: "Then move closer to the labeled button detail.",
     body:
-      "The last view moves in with restraint. It should bring attention to tactile detail without losing the device entirely or turning the model into a color block.",
+      "The final view moves in with more focus. It should bring attention to tactile detail without losing the device entirely or turning the model into an abstract shape.",
   },
 ];
 

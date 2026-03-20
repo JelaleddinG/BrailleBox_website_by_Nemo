@@ -9,12 +9,13 @@ export default function ParentsPage() {
       <PageHero
         eyebrow="For Parents"
         title="Accessible literacy deserves better tools."
-        description="BrailleBox is part of a broader mission to help visually impaired students learn with products that feel thoughtful, modern, and built for real educational progress."
+        description="BrailleBox is being built to help visually impaired students learn with tools that feel thoughtful, modern, and grounded in real educational use."
       />
       <section className="mx-auto max-w-4xl px-6 py-20 lg:px-10 text-lg leading-8 text-slate-600">
         <p>
           Parents and advocates should not have to choose between mission and quality.
-          BrailleBox is being built to push both forward at the same time.
+          BrailleBox is being built to support both: stronger learning tools and a
+          stronger future for Braille literacy.
         </p>
       </section>
       <SiteFooter />

@@ -5,16 +5,16 @@ import { SiteFooter } from "@/components/site-footer";
 
 const featureCards = [
   {
-    title: "Braille learning, made tangible",
-    body: "A tactile product experience designed to feel focused, refined, and worthy of the students using it.",
+    title: "Made for Braille learning",
+    body: "A tactile device designed to help students practice Braille in a way that feels focused, consistent, and engaging.",
   },
   {
-    title: "Built for teacher visibility",
-    body: "A system that helps educators understand progress more clearly without drowning in manual tracking.",
+    title: "Built for teachers",
+    body: "A system that helps educators see progress more clearly without relying on manual tracking alone.",
   },
   {
-    title: "Designed for schools that care",
-    body: "BrailleBox helps schools move toward a stronger learning loop between students, teachers, and outcomes.",
+    title: "Useful for schools",
+    body: "A clearer way to connect student work, teacher insight, and school-level understanding.",
   },
 ];
 
@@ -40,7 +40,7 @@ export default function Home() {
           <div className="relative z-10 max-w-3xl">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-sm text-white/78 backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-[var(--bb-yellow)]" />
-              Braille learning for students, educators, and schools
+              Braille learning for students, teachers, and schools
             </div>
             <h1 className="text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl">
               Braille education,
@@ -48,9 +48,9 @@ export default function Home() {
               built like it matters.
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-white/78 sm:text-xl">
-              BrailleBox is a hardware and software system helping visually
-              impaired students learn Braille while giving educators and schools
-              a clearer view of progress.
+              BrailleBox is a hardware and software system that helps visually
+              impaired students learn Braille while giving teachers and schools a
+              clearer view of progress.
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link href="/contact" className="btn-primary">
@@ -83,12 +83,11 @@ export default function Home() {
           <div>
             <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Our Product</div>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-              Hardware and software, working as one system.
+              One device. One dashboard. One clearer learning loop.
             </h2>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              BrailleBox combines a tactile learning device with connected teacher
-              visibility. The result is a clearer learning loop for students,
-              educators, and schools.
+              BrailleBox connects student interaction with teacher visibility, so
+              learning is easier to follow and instruction is easier to guide.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 text-sm font-medium">
               <span className="rounded-full bg-[var(--bb-teal)]/12 px-4 py-2 text-[var(--bb-dark-teal)]">Braille learning</span>
@@ -106,20 +105,20 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
         <div className="grid gap-6 md:grid-cols-3">
-          <Link href="/tvis" className="rounded-[2rem] border border-black/8 bg-white p-8 shadow-[0_12px_35px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5">
+          <Link href="/tvis" className="feature-link-card">
             <div className="text-sm uppercase tracking-[0.2em] text-[var(--bb-dark-teal)]">For TVIs</div>
             <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">Teach with more clarity.</h3>
-            <p className="mt-4 text-base leading-7 text-slate-600">A better way to track student progress and adapt instruction with less friction.</p>
+            <p className="mt-4 text-base leading-7 text-slate-600">See progress more clearly and spend less time relying on manual tracking.</p>
           </Link>
-          <Link href="/schools" className="rounded-[2rem] border border-black/8 bg-white p-8 shadow-[0_12px_35px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5">
+          <Link href="/schools" className="feature-link-card">
             <div className="text-sm uppercase tracking-[0.2em] text-[var(--bb-orange)]">For Schools</div>
-            <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">Support better Braille outcomes.</h3>
-            <p className="mt-4 text-base leading-7 text-slate-600">A stronger learning system for districts and schools that want better visibility and support.</p>
+            <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">Support better Braille instruction.</h3>
+            <p className="mt-4 text-base leading-7 text-slate-600">Give educators and students a system that is easier to use and easier to understand.</p>
           </Link>
           <Link href="/parents" className="feature-link-card">
             <div className="text-sm uppercase tracking-[0.2em] text-slate-600">For Parents</div>
             <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">Follow the mission.</h3>
-            <p className="mt-4 text-base leading-7 text-slate-600">See how BrailleBox is helping push accessible literacy toward a better future.</p>
+            <p className="mt-4 text-base leading-7 text-slate-600">See how BrailleBox is being built to support stronger literacy outcomes for visually impaired students.</p>
           </Link>
         </div>
       </section>
@@ -127,18 +126,18 @@ export default function Home() {
       <section className="brand-gradient text-white">
         <div className="mx-auto max-w-5xl px-6 py-24 text-center lg:px-10">
           <h2 className="text-4xl font-semibold tracking-[-0.05em] sm:text-6xl">
-            Early, but serious.
+            Built with real classrooms in mind.
           </h2>
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-white/88">
-            BrailleBox is currently piloting and learning from real educator
-            feedback, including Sherlock Center. If you want to stay close to the
-            product, the mission, or early access, now is the right time.
+            BrailleBox is being shaped through pilot work and educator feedback,
+            including work with Sherlock Center. If you want to follow the
+            product or explore early access, this is the right time.
           </p>
           <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link href="/contact" className="inline-flex items-center justify-center rounded-full bg-white px-7 py-4 text-sm font-semibold text-slate-950 transition hover:bg-slate-100">
+            <Link href="/contact" className="btn-light">
               Request Early Access
             </Link>
-            <Link href="/about" className="inline-flex items-center justify-center rounded-full border border-white/35 px-7 py-4 text-sm font-semibold text-white transition hover:bg-white/10">
+            <Link href="/about" className="btn-secondary border-white/35">
               About BrailleBox
             </Link>
           </div>

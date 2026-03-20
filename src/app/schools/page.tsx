@@ -9,13 +9,13 @@ export default function SchoolsPage() {
       <PageHero
         eyebrow="For Schools"
         title="A stronger Braille learning system for schools and districts."
-        description="BrailleBox helps schools support visually impaired students with a more connected approach to learning, teacher visibility, and progress understanding."
+        description="BrailleBox helps schools support visually impaired students with a more connected approach to student practice, teacher visibility, and learning progress."
       />
       <section className="mx-auto max-w-5xl px-6 py-20 lg:px-10">
         <div className="grid gap-6 md:grid-cols-3">
-          <div className="rounded-[2rem] border border-black/8 p-8"><h2 className="text-2xl font-semibold">Current-day assistive technology</h2><p className="mt-4 text-slate-600 leading-7">A product experience built for today’s classrooms, not inherited from the past.</p></div>
-          <div className="rounded-[2rem] border border-black/8 p-8"><h2 className="text-2xl font-semibold">Better visibility</h2><p className="mt-4 text-slate-600 leading-7">A connected system that helps schools understand student learning more clearly.</p></div>
-          <div className="rounded-[2rem] border border-black/8 p-8"><h2 className="text-2xl font-semibold">Mission with rigor</h2><p className="mt-4 text-slate-600 leading-7">Built for institutions that care about accessibility, literacy, and educational quality.</p></div>
+          <div className="rounded-[2rem] border border-black/8 p-8"><h2 className="text-2xl font-semibold">Built for current classrooms</h2><p className="mt-4 text-slate-600 leading-7">A system designed for how schools work today, not one inherited from older disconnected tools.</p></div>
+          <div className="rounded-[2rem] border border-black/8 p-8"><h2 className="text-2xl font-semibold">Better visibility</h2><p className="mt-4 text-slate-600 leading-7">A clearer way to understand student learning through connected teacher insight.</p></div>
+          <div className="rounded-[2rem] border border-black/8 p-8"><h2 className="text-2xl font-semibold">A stronger support system</h2><p className="mt-4 text-slate-600 leading-7">Built for schools that care about accessibility, literacy, and giving educators better tools to work with.</p></div>
         </div>
       </section>
       <SiteFooter />

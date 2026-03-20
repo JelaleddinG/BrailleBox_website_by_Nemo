@@ -31,15 +31,15 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Us"
         title="Built around a belief that Braille literacy matters."
-        description="BrailleBox exists to push Braille education toward better tools, clearer feedback, and a higher standard of product quality."
+        description="BrailleBox exists to give Braille education better tools, clearer feedback, and a stronger standard for what this category can be."
       />
 
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div className="max-w-3xl text-lg leading-8 text-slate-600">
           <p>
-            BrailleBox is mission-driven, product-focused, and built with the belief
-            that accessible literacy deserves technology that feels serious,
-            modern, and worthy of the classroom.
+            BrailleBox is being built with a simple belief: Braille literacy deserves
+            better tools. The goal is not to add more noise to the classroom. The goal
+            is to make student learning easier to support and easier to understand.
           </p>
           <p className="mt-6">
             The company is currently piloting, learning from educator feedback,
