@@ -40,7 +40,7 @@ export async function SiteHeader() {
           ))}
         </nav>
         {session ? (
-          <LogoutButton className={session.role === "parent" ? "btn-parent" : session.role === "admin" ? "btn-admin" : "btn-primary"} />
+          <LogoutButton className={`btn-logout ${session.role === "parent" ? "btn-logout-parent" : session.role === "admin" ? "btn-logout-admin" : "btn-logout-teacher"}`} />
         ) : (
           <Link href="/login" className="btn-primary">Login</Link>
         )}

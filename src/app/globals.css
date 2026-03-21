@@ -120,6 +120,34 @@ img { max-width: 100%; height: auto; }
   transform: translateY(-1px);
 }
 
+.btn-logout {
+  border-radius: 9999px;
+  padding: 0.78rem 1.25rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.24);
+  backdrop-filter: blur(10px);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+.btn-logout:hover {
+  transform: translateY(-1px) scale(1.01);
+  filter: saturate(1.08);
+}
+.btn-logout-teacher {
+  background: linear-gradient(135deg, var(--bb-dark-teal), var(--bb-teal));
+  box-shadow: 0 12px 28px rgba(1,194,194,0.28);
+}
+.btn-logout-parent {
+  background: linear-gradient(135deg, #ff6f55, var(--bb-orange));
+  box-shadow: 0 12px 28px rgba(255,99,71,0.28);
+}
+.btn-logout-admin {
+  background: linear-gradient(135deg, #4baed2, var(--bb-blue));
+  box-shadow: 0 12px 28px rgba(87,183,217,0.28);
+}
+
 .btn-light {
   border: 1px solid rgba(255, 255, 255, 0.38);
   background: rgba(255, 255, 255, 0.96);
