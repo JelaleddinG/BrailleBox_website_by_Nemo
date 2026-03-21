@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { buildSchoolProgressPdf } from "@/lib/pdf";
+import { buildStateCompliancePdf } from "@/lib/pdf";
 
 export async function GET(req: Request) {
   const session = await getSession();
@@ -25,19 +25,32 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const pdf = buildSchoolProgressPdf({
+  const parentMessage = db.prepare(`
+    SELECT created_at
+    FROM messages
+    WHERE student_id = ? AND sender_type = 'teacher' AND recipient_type = 'parent'
+    ORDER BY created_at DESC
+    LIMIT 1
+  `).get(student.id) as { created_at?: string } | undefined;
+
+  const pdf = buildStateCompliancePdf({
     schoolName: student.school_name || session.school || "School",
+    district: student.school_name || undefined,
+    state: "MA",
     reportDate: new Date().toLocaleDateString("en-US"),
+    reportingPeriod: "Current quarter",
     studentName: student.name,
     grade: student.grade,
     teacherName: student.teacher_name,
+    annualGoal: student.goals,
+    baseline: student.profile_summary,
+    measurementMethod: "Braille exercise accuracy, fluency timing, teacher observation, and intervention outcomes.",
     progressPercent: student.progress_percent,
-    currentFocus: student.current_focus,
-    recentActivity: student.recent_activity,
-    strengths: student.strengths,
-    supportNeeds: student.support_needs,
-    goals: student.goals,
-    notes: student.notes,
+    progressNarrative: student.recent_activity,
+    accommodations: student.support_needs,
+    serviceSummary: student.current_focus,
+    nextSteps: student.goals,
+    parentCommunicationDate: parentMessage?.created_at,
   });
 
   return new NextResponse(pdf, {
