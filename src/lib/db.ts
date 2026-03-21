@@ -162,6 +162,15 @@ const schoolColumns = db.prepare("PRAGMA table_info(schools)").all() as Array<{ 
 const schoolColumnSet = new Set(schoolColumns.map((c) => c.name));
 if (!schoolColumnSet.has("city")) db.exec("ALTER TABLE schools ADD COLUMN city TEXT;");
 
+const verificationColumns = db.prepare("PRAGMA table_info(verification_codes)").all() as Array<{ name: string }>;
+const verificationColumnSet = new Set(verificationColumns.map((c) => c.name));
+if (!verificationColumnSet.has("user_id")) db.exec("ALTER TABLE verification_codes ADD COLUMN user_id TEXT;");
+if (!verificationColumnSet.has("user_type")) db.exec("ALTER TABLE verification_codes ADD COLUMN user_type TEXT;");
+if (verificationColumnSet.has("teacher_id")) {
+  db.exec("UPDATE verification_codes SET user_id = teacher_id WHERE user_id IS NULL OR user_id = '';");
+  db.exec("UPDATE verification_codes SET user_type = 'teacher' WHERE user_type IS NULL OR user_type = '';");
+}
+
 const teacherColumns = db.prepare("PRAGMA table_info(teachers)").all() as Array<{ name: string }>;
 const teacherColumnSet = new Set(teacherColumns.map((c) => c.name));
 const teacherExtras: Array<[string, string]> = [
