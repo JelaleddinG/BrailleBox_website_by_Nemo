@@ -258,4 +258,124 @@ for (const t of teachersWithoutSchool) {
   if (target) db.prepare("UPDATE teachers SET school_id = ? WHERE id = ?").run(target, t.id);
 }
 
+// Expanded demo network across schools/districts.
+const ensureSchool = (name: string, district: string, state = "MA") => {
+  const existing = db.prepare("SELECT id FROM schools WHERE name = ?").get(name) as { id: string } | undefined;
+  if (existing) return existing.id;
+  const id = crypto.randomUUID();
+  db.prepare("INSERT INTO schools (id, name, district, state) VALUES (?, ?, ?, ?)").run(id, name, district, state);
+  return id;
+};
+
+const ensureTeacher = (name: string, email: string, schoolId: string, organization: string) => {
+  const existing = db.prepare("SELECT id FROM teachers WHERE email = ?").get(email) as { id: string } | undefined;
+  if (existing) {
+    db.prepare("UPDATE teachers SET school_id = ?, organization = ?, is_verified = 1 WHERE id = ?").run(schoolId, organization, existing.id);
+    return existing.id;
+  }
+  const id = crypto.randomUUID();
+  db.prepare(`INSERT INTO teachers (id, name, email, password_hash, school_id, organization, role, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, 1)`).run(
+    id,
+    name,
+    email,
+    bcrypt.hashSync("password", 10),
+    schoolId,
+    organization,
+    "Teacher of the Visually Impaired",
+  );
+  return id;
+};
+
+const ensureParent = (name: string, email: string, schoolId: string, phone: string) => {
+  const existing = db.prepare("SELECT id FROM parents WHERE email = ?").get(email) as { id: string } | undefined;
+  if (existing) {
+    db.prepare("UPDATE parents SET school_id = ?, is_verified = 1 WHERE id = ?").run(schoolId, existing.id);
+    return existing.id;
+  }
+  const id = crypto.randomUUID();
+  db.prepare(`INSERT INTO parents (id, name, email, password_hash, school_id, phone, is_verified) VALUES (?, ?, ?, ?, ?, ?, 1)`).run(
+    id,
+    name,
+    email,
+    bcrypt.hashSync("parent123", 10),
+    schoolId,
+    phone,
+  );
+  return id;
+};
+
+const ensureAdmin = (name: string, email: string, schoolId: string, level: "school" | "district" = "school") => {
+  const existing = db.prepare("SELECT id FROM school_admins WHERE email = ?").get(email) as { id: string } | undefined;
+  if (existing) {
+    db.prepare("UPDATE school_admins SET school_id = ?, admin_level = ?, is_verified = 1 WHERE id = ?").run(schoolId, level, existing.id);
+    return existing.id;
+  }
+  const id = crypto.randomUUID();
+  db.prepare(`INSERT INTO school_admins (id, name, email, password_hash, school_id, admin_level, is_verified) VALUES (?, ?, ?, ?, ?, ?, 1)`).run(
+    id,
+    name,
+    email,
+    bcrypt.hashSync("admin123", 10),
+    schoolId,
+    level,
+  );
+  return id;
+};
+
+const ensureStudent = (teacherId: string, data: { name: string; grade: string; age: number; progress_percent: number; current_focus: string; recent_activity: string; profile_summary: string; strengths: string; support_needs: string; goals: string; preferred_learning_style: string; notes: string }) => {
+  const existing = db.prepare("SELECT id FROM students WHERE teacher_id = ? AND name = ?").get(teacherId, data.name) as { id: string } | undefined;
+  if (existing) return existing.id;
+  const id = crypto.randomUUID();
+  db.prepare(`INSERT INTO students (id, teacher_id, name, grade, age, progress_percent, current_focus, recent_activity, profile_summary, strengths, support_needs, goals, preferred_learning_style, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
+    id,
+    teacherId,
+    data.name,
+    data.grade,
+    data.age,
+    data.progress_percent,
+    data.current_focus,
+    data.recent_activity,
+    data.profile_summary,
+    data.strengths,
+    data.support_needs,
+    data.goals,
+    data.preferred_learning_style,
+    data.notes,
+  );
+  return id;
+};
+
+const ensureParentLink = (parentId: string, studentId: string) => {
+  db.prepare("INSERT OR IGNORE INTO parent_student (id, parent_id, student_id, relationship) VALUES (?, ?, ?, 'Parent')").run(crypto.randomUUID(), parentId, studentId);
+};
+
+const sherlockId = ensureSchool("Sherlock Center", "Massachusetts");
+const perkinsId = ensureSchool("Perkins School for the Blind", "Watertown Public Schools");
+const pioneerId = ensureSchool("Pioneer Valley Learning Collaborative", "Pioneer Valley District");
+
+const tMaya = ensureTeacher("Maya Thompson", "maya.thompson@braillebox-demo.edu", sherlockId, "Sherlock Center");
+const tDaniel = ensureTeacher("Daniel Rivera", "daniel.rivera@braillebox-demo.edu", perkinsId, "Perkins School for the Blind");
+const tAisha = ensureTeacher("Aisha Karim", "aisha.karim@braillebox-demo.edu", pioneerId, "Pioneer Valley Learning Collaborative");
+
+const pSofia = ensureParent("Sofia Martinez", "sofia.martinez@braillebox-demo.edu", sherlockId, "617-555-0142");
+const pMarcus = ensureParent("Marcus Lee", "marcus.lee@braillebox-demo.edu", perkinsId, "617-555-0188");
+const pNadia = ensureParent("Nadia Rahman", "nadia.rahman@braillebox-demo.edu", pioneerId, "413-555-0129");
+
+ensureAdmin("Elaine Brooks", "elaine.brooks@braillebox-demo.edu", sherlockId, "school");
+ensureAdmin("Thomas Gallagher", "thomas.gallagher@braillebox-demo.edu", perkinsId, "district");
+
+const s1 = ensureStudent(tMaya, {
+  name: "Evelyn Carter", grade: "Grade 3", age: 8, progress_percent: 69, current_focus: "Contractions and word families", recent_activity: "Completed contraction drills with 84% accuracy", profile_summary: "Evelyn is transitioning from letter fluency to early contractions with steady confidence.", strengths: "Strong tactile discrimination and high lesson engagement.", support_needs: "Needs more support when shifting from guided to independent reading.", goals: "Reach 80% contraction accuracy in guided passages.", preferred_learning_style: "Short tactile drills followed by immediate verbal feedback.", notes: "Great momentum this week; celebrate consistency.",
+});
+const s2 = ensureStudent(tDaniel, {
+  name: "Jonah Price", grade: "Grade 5", age: 11, progress_percent: 74, current_focus: "Reading fluency and punctuation", recent_activity: "Improved pacing in 2 timed passages", profile_summary: "Jonah is improving fluency and punctuation awareness through structured timed practice.", strengths: "Strong retention and willingness to self-correct.", support_needs: "Needs pacing support under time pressure.", goals: "Maintain punctuation accuracy while increasing reading speed.", preferred_learning_style: "Timed passages with clear checkpoint goals.", notes: "Responds well to confidence-building prompts.",
+});
+const s3 = ensureStudent(tAisha, {
+  name: "Layla Hassan", grade: "Grade 2", age: 7, progress_percent: 58, current_focus: "Dot pattern recall", recent_activity: "Practiced lower-cell combinations with guided support", profile_summary: "Layla is building reliable recall of dot patterns through repeated tactile sequencing.", strengths: "Excellent persistence and positive engagement.", support_needs: "Needs repetition when introduced to new lower-cell combinations.", goals: "Increase independent recall on beginner combinations.", preferred_learning_style: "Pattern repetition with short breaks and positive reinforcement.", notes: "Consistency improves after warm-up rounds.",
+});
+
+ensureParentLink(pSofia, s1);
+ensureParentLink(pMarcus, s2);
+ensureParentLink(pNadia, s3);
+
 export { db };
