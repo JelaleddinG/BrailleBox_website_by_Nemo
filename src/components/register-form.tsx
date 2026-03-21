@@ -84,19 +84,20 @@ export function RegisterForm() {
         className="w-full rounded-2xl border border-white/12 bg-white/95 px-4 py-3 text-slate-950 outline-none"
       />
       {locationResults.length > 0 ? (
-        <div className="max-h-40 overflow-auto rounded-xl border border-white/15 bg-white/95 p-1">
+        <div className="max-h-44 overflow-auto rounded-xl border border-[var(--bb-teal)]/30 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,255,255,0.96))] p-1 shadow-[0_12px_28px_rgba(1,194,194,0.16)]">
           {locationResults.map((r, i) => (
             <button
               key={`${r.label}-${i}`}
               type="button"
-              className="block w-full rounded-lg px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-100"
+              className="block w-full rounded-lg px-3 py-2 text-left text-xs text-slate-700 hover:bg-[rgba(1,194,194,0.12)]"
               onClick={() => {
                 setForm({ ...form, city: r.city, state: r.state, district: r.district || form.district });
                 setLocationQuery(r.label);
                 setLocationResults([]);
               }}
             >
-              {r.label}
+              <div className="font-medium text-[var(--bb-dark-teal)]">{[r.city, r.state].filter(Boolean).join(", ") || "Location"}</div>
+              <div className="text-[11px] text-slate-500">{r.district ? `${r.district} • ` : ""}{r.label}</div>
             </button>
           ))}
         </div>
