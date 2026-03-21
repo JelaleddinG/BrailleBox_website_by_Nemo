@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ParentLoginForm } from "@/components/parent-login-form";
+import Link from "next/link";
 
 export default async function ParentLoginPage() {
   const session = await getSession();
@@ -14,33 +15,13 @@ export default async function ParentLoginPage() {
       <section className="mx-auto flex min-h-[calc(100vh-88px)] max-w-7xl items-center px-6 py-16 lg:px-10">
         <div className="grid w-full gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
           <div className="text-white">
-            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">Parent Portal</div>
+            <Link href="/login" className="btn-back">← Back</Link>
+            <div className="mt-5 text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">Parent Portal</div>
             <h1 className="mt-4 text-6xl font-semibold tracking-[-0.06em]">Follow your child&apos;s journey.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/80">
-              See progress updates, read teacher comments, and stay connected to your child&apos;s Braille learning.
-            </p>
-            <div className="mt-8 space-y-3 text-sm text-white/70">
-              <div className="flex items-center gap-3">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--bb-orange)]/20 text-xs">✓</span>
-                Simple progress summaries in plain language
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--bb-orange)]/20 text-xs">✓</span>
-                Teacher feedback and comments
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--bb-orange)]/20 text-xs">✓</span>
-                Direct messaging with teachers
-              </div>
-            </div>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/80">See progress updates, read teacher comments, and stay connected to your child&apos;s Braille learning.</p>
           </div>
           <div className="rounded-[2rem] border border-white/10 bg-white/10 p-8 text-white shadow-[0_24px_80px_rgba(15,23,42,0.22)] backdrop-blur-xl">
             <ParentLoginForm />
-            <div className="mt-6 border-t border-white/10 pt-6">
-              <p className="text-xs text-white/50">Demo access:</p>
-              <p className="text-sm text-white/70">Email: parent@test.edu</p>
-              <p className="text-sm text-white/70">Password: parent123</p>
-            </div>
           </div>
         </div>
       </section>
