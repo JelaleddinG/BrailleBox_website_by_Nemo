@@ -210,18 +210,25 @@ img { max-width: 100%; height: auto; }
   align-items: center;
   gap: 0.4rem;
   border-radius: 9999px;
-  padding: 0.45rem 0.85rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.86);
-  border: 1px solid rgba(255,255,255,0.24);
-  background: rgba(255,255,255,0.08);
+  padding: 0.5rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.34);
+  background: rgba(8, 18, 32, 0.55);
   backdrop-filter: blur(8px);
+  box-shadow: 0 10px 24px rgba(7,17,29,0.24);
   transition: background 150ms ease, transform 150ms ease, opacity 150ms ease;
 }
 .btn-back:hover {
-  background: rgba(255,255,255,0.14);
+  background: rgba(8, 18, 32, 0.72);
   transform: translateY(-1px);
+}
+.auth-back-floating {
+  position: sticky;
+  top: 0.5rem;
+  z-index: 20;
+  width: fit-content;
 }
 
 .btn-light {

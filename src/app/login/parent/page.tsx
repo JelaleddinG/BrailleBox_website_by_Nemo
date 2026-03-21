@@ -15,7 +15,7 @@ export default async function ParentLoginPage() {
       <section className="mx-auto flex min-h-[calc(100vh-88px)] max-w-7xl items-center px-6 py-16 lg:px-10">
         <div className="grid w-full gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
           <div className="text-white">
-            <Link href="/login" className="btn-back">← Back</Link>
+            <Link href="/login" className="btn-back auth-back-floating">← Back</Link>
             <div className="mt-5 text-sm uppercase tracking-[0.24em] text-[var(--bb-yellow)]">Parent Portal</div>
             <h1 className="mt-4 text-6xl font-semibold tracking-[-0.06em]">Follow your child&apos;s journey.</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/80">See progress updates, read teacher comments, and stay connected to your child&apos;s Braille learning.</p>
