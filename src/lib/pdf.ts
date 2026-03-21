@@ -32,12 +32,14 @@ export function buildSchoolProgressPdf(data: {
   goals?: string;
   notes?: string;
 }) {
+  const reportId = `BB-${new Date().toISOString().slice(0,10).replace(/-/g,"")}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
   const lines: string[] = [];
   const push = (line = "") => lines.push(line);
 
   push("BRAILLEBOX STUDENT PROGRESS REPORT");
   push(`${data.schoolName}`);
   push(`Report Date: ${data.reportDate}`);
+  push(`Report ID: ${reportId}`);
   push("");
   push(`Student Name: ${data.studentName}`);
   push(`Grade: ${data.grade || "N/A"}`);
@@ -72,6 +74,8 @@ export function buildSchoolProgressPdf(data: {
   push("SIGN-OFF");
   push("Teacher Signature: ______________________");
   push("Date: ______________________");
+  push("");
+  push("BrailleBox Confidential • For educational use only");
 
   let y = 790;
   const textOps: string[] = ["BT", "/F1 11 Tf", "50 800 Td"];

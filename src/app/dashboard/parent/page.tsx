@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ParentMessagePanel } from "@/components/parent-message-panel";
+import { ParentDownloadReportButton } from "@/components/parent-download-report-button";
 
 export default async function ParentDashboardPage() {
   const session = await getSession();
@@ -46,6 +47,7 @@ export default async function ParentDashboardPage() {
 
               <p className="mt-4 text-slate-700"><strong>Focus:</strong> {student.current_focus || "Teacher is setting goals."}</p>
               <p className="mt-2 text-slate-700"><strong>Recent activity:</strong> {student.recent_activity || "No recent activity yet."}</p>
+
               <div className="mt-3 grid gap-3 md:grid-cols-3">
                 <div className="rounded-lg bg-[#fff3ef] p-3 text-sm text-slate-700"><strong>Current progress:</strong> {student.progress_percent}%</div>
                 <div className="rounded-lg bg-[#fff3ef] p-3 text-sm text-slate-700"><strong>Teacher:</strong> {student.teacher_name}</div>
@@ -63,13 +65,12 @@ export default async function ParentDashboardPage() {
                 <p className="mt-2 text-sm leading-7 text-slate-700"><strong>Last exercise:</strong> {student.last_exercise_title ? `${student.last_exercise_title}${typeof student.last_exercise_score === "number" ? ` (${student.last_exercise_score}%)` : ""}` : "No exercise recorded yet."}</p>
               </details>
 
+              <ParentDownloadReportButton studentId={student.id} studentName={student.name} />
               <ParentMessagePanel teacherId={student.teacher_id} studentId={student.id} />
             </div>
           ))}
 
-          {students.length === 0 ? (
-            <div className="rounded-2xl bg-white p-8 text-slate-600">No students linked yet. Ask your teacher to connect your parent account.</div>
-          ) : null}
+          {students.length === 0 ? <div className="rounded-2xl bg-white p-8 text-slate-600">No students linked yet. Ask your teacher to connect your parent account.</div> : null}
         </div>
       </section>
       <SiteFooter />

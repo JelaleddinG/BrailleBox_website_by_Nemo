@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { LogoutButton } from "@/components/logout-button";
 import { MarkMessageReadButton } from "@/components/dashboard/mark-message-read-button";
+import { MarkAllReadButton } from "@/components/dashboard/mark-all-read-button";
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -65,7 +66,10 @@ export default async function DashboardPage() {
         <div className="mt-8 rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
           <div className="flex items-center justify-between gap-3">
             <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Parent messages</div>
-            {unreadCount > 0 ? <div className="rounded-full bg-[#e8f8f8] px-3 py-1 text-xs font-semibold text-[var(--bb-dark-teal)]">{unreadCount} unread</div> : null}
+            <div className="flex items-center gap-3">
+              {unreadCount > 0 ? <div className="rounded-full bg-[#e8f8f8] px-3 py-1 text-xs font-semibold text-[var(--bb-dark-teal)]">{unreadCount} unread</div> : null}
+              {unreadCount > 0 ? <MarkAllReadButton /> : null}
+            </div>
           </div>
           <div className="mt-4 grid gap-3">
             {inbox.map((m) => (
