@@ -66,7 +66,7 @@ export function TeacherLoginForm() {
         </div>
       </div>
       {error ? <div className="text-sm text-[#ffd3cb]">{error}</div> : null}
-      <button type="submit" className="btn-light w-full" disabled={loading}>
+      <button type="submit" className="btn-auth btn-auth-teacher" disabled={loading}>
         {loading ? "Logging in..." : "Login to Teacher Portal"}
       </button>
       <div className="text-center text-sm text-white/72">

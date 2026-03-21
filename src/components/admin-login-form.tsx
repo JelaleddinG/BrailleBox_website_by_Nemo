@@ -48,7 +48,7 @@ export function AdminLoginForm() {
         </div>
       </div>
       {error ? <div className="text-sm text-[#ffd3cb]">{error}</div> : null}
-      <button type="submit" className="btn-admin w-full" disabled={loading}>{loading ? "Logging in..." : "Login to Admin Portal"}</button>
+      <button type="submit" className="btn-auth btn-auth-admin" disabled={loading}>{loading ? "Logging in..." : "Login to Admin Portal"}</button>
       <div className="text-center text-sm text-white/72">Not an admin? <Link href="/login" className="auth-link font-medium underline underline-offset-4">Choose different role</Link></div>
     </form>
   );
