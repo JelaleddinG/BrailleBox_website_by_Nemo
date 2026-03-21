@@ -184,6 +184,30 @@ db.exec(`
     FOREIGN KEY (student_id) REFERENCES students(id),
     FOREIGN KEY (teacher_id) REFERENCES teachers(id)
   );
+
+  -- Lesson planning + sequencing engine (v1)
+  CREATE TABLE IF NOT EXISTS lesson_plans (
+    id TEXT PRIMARY KEY,
+    teacher_id TEXT NOT NULL,
+    student_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    objective TEXT,
+    status TEXT DEFAULT 'scheduled',
+    scheduled_for TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (teacher_id) REFERENCES teachers(id),
+    FOREIGN KEY (student_id) REFERENCES students(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS lesson_steps (
+    id TEXT PRIMARY KEY,
+    lesson_id TEXT NOT NULL,
+    step_order INTEGER NOT NULL,
+    exercise_type TEXT NOT NULL,
+    difficulty_level INTEGER DEFAULT 1,
+    estimated_min INTEGER DEFAULT 5,
+    FOREIGN KEY (lesson_id) REFERENCES lesson_plans(id)
+  );
 `);
 
 // Add new columns to existing tables if they don't exist

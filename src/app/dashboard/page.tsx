@@ -91,6 +91,7 @@ export default async function DashboardPage() {
           </div>
           <div className="flex gap-3">
             <Link href="/dashboard/students/new" className="btn-primary">New student</Link>
+            <Link href="/onboarding/teacher" className="btn-dark">Onboarding</Link>
             <LogoutButton />
           </div>
         </div>
