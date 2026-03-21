@@ -158,6 +158,10 @@ db.exec(`
 `);
 
 // Add new columns to existing tables if they don't exist
+const schoolColumns = db.prepare("PRAGMA table_info(schools)").all() as Array<{ name: string }>;
+const schoolColumnSet = new Set(schoolColumns.map((c) => c.name));
+if (!schoolColumnSet.has("city")) db.exec("ALTER TABLE schools ADD COLUMN city TEXT;");
+
 const teacherColumns = db.prepare("PRAGMA table_info(teachers)").all() as Array<{ name: string }>;
 const teacherColumnSet = new Set(teacherColumns.map((c) => c.name));
 const teacherExtras: Array<[string, string]> = [

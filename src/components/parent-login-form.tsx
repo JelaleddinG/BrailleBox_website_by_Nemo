@@ -59,7 +59,7 @@ export function ParentLoginForm() {
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="px-4 text-sm font-medium text-slate-500 transition hover:text-[var(--bb-orange)] hover:underline"
+            className="px-4 text-sm font-medium text-slate-500 transition hover:bg-black/5 hover:text-slate-600"
           >
             {showPassword ? "Hide" : "Show"}
           </button>

@@ -44,7 +44,7 @@ export function AdminLoginForm() {
         <label className="mb-2 block text-sm font-medium text-white">Password</label>
         <div className="flex overflow-hidden rounded-2xl border border-white/12 bg-white/95">
           <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"} className="w-full px-4 py-3 text-slate-950 outline-none" required />
-          <button type="button" onClick={() => setShowPassword((v) => !v)} className="px-4 text-sm font-medium text-slate-500 transition hover:text-[var(--bb-blue)] hover:underline">{showPassword ? "Hide" : "Show"}</button>
+          <button type="button" onClick={() => setShowPassword((v) => !v)} className="px-4 text-sm font-medium text-slate-500 transition hover:bg-black/5 hover:text-slate-600">{showPassword ? "Hide" : "Show"}</button>
         </div>
       </div>
       {error ? <div className="text-sm text-[#ffd3cb]">{error}</div> : null}
