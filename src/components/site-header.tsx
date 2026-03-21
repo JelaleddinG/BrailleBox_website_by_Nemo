@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getSession } from "@/lib/auth";
+import { LogoutButton } from "@/components/logout-button";
 
 const navItems = [
   { href: "/tvis", label: "TVIs" },
@@ -39,7 +40,7 @@ export async function SiteHeader() {
           ))}
         </nav>
         {session ? (
-          <Link href="/dashboard" className="btn-primary">Dashboard</Link>
+          <LogoutButton className={session.role === "parent" ? "btn-parent" : session.role === "admin" ? "btn-admin" : "btn-primary"} />
         ) : (
           <Link href="/login" className="btn-primary">Login</Link>
         )}
