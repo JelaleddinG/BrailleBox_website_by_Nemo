@@ -75,8 +75,9 @@ export default async function DashboardPage() {
           <div className="mt-4 grid gap-3">
             {inbox.map((m) => (
               <div key={m.id} className="rounded-xl border border-slate-100 p-4">
-                <div className="text-xs text-slate-500">{m.parent_name || 'Parent'} {m.student_name ? `• ${m.student_name}` : ''}</div>
-                <div className="mt-1 text-sm font-semibold">{m.subject || 'Message'}</div>
+                <div className="text-xs text-slate-500">From Parent: <span className="font-medium text-slate-700">{m.parent_name || 'Unknown parent'}</span></div>
+                <div className="mt-1 text-xs text-slate-500">Student: <span className="font-medium text-slate-700">{m.student_name || 'Not specified'}</span></div>
+                <div className="mt-2 text-sm font-semibold">{m.subject || 'Message'}</div>
                 <div className="mt-1 text-sm text-slate-700">{m.body}</div>
               </div>
             ))}

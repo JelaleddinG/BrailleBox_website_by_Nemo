@@ -30,7 +30,7 @@ export function ParentMessagePanel({ teacherId, studentId }: { teacherId: string
       <input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Subject" className="mt-3 w-full rounded-lg border border-orange-100 px-3 py-2 text-sm" />
       <textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder="Write your message" className="mt-2 min-h-[90px] w-full rounded-lg border border-orange-100 px-3 py-2 text-sm" />
       <div className="mt-2 flex items-center gap-3">
-        <button onClick={send} className="btn-parent">Send</button>
+        <button onClick={send} className="btn-message-send">Send message</button>
         {status ? <span className="text-xs text-slate-600">{status}</span> : null}
       </div>
     </div>

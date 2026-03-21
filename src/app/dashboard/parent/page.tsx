@@ -11,7 +11,7 @@ export default async function ParentDashboardPage() {
   if (session.role !== "parent") redirect("/dashboard");
 
   const students = db.prepare(`
-    SELECT s.id, s.name, s.grade, s.progress_percent, s.current_focus, s.recent_activity, s.profile_summary, s.notes,
+    SELECT s.id, s.name, s.grade, s.progress_percent, s.current_focus, s.recent_activity, s.profile_summary, s.notes, s.strengths, s.support_needs,
            t.id as teacher_id, t.name as teacher_name
     FROM parent_student ps
     JOIN students s ON ps.student_id = s.id
@@ -46,6 +46,10 @@ export default async function ParentDashboardPage() {
 
               <p className="mt-4 text-slate-700"><strong>Focus:</strong> {student.current_focus || "Teacher is setting goals."}</p>
               <p className="mt-2 text-slate-700"><strong>Recent activity:</strong> {student.recent_activity || "No recent activity yet."}</p>
+              <div className="mt-3 grid gap-3 md:grid-cols-2">
+                <div className="rounded-lg bg-[#fff3ef] p-3 text-sm text-slate-700"><strong>Current progress:</strong> {student.progress_percent}%</div>
+                <div className="rounded-lg bg-[#fff3ef] p-3 text-sm text-slate-700"><strong>Teacher:</strong> {student.teacher_name}</div>
+              </div>
 
               <details className="mt-4 rounded-xl bg-[#fff3ef] p-4">
                 <summary className="cursor-pointer font-medium text-[var(--bb-orange)]">View detailed notes</summary>
