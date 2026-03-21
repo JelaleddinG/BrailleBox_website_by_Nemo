@@ -155,6 +155,35 @@ db.exec(`
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES students(id)
   );
+
+  -- Fine-grained response telemetry for learning intelligence.
+  CREATE TABLE IF NOT EXISTS student_error_events (
+    id TEXT PRIMARY KEY,
+    student_id TEXT NOT NULL,
+    session_id TEXT,
+    exercise_type TEXT,
+    expected_pattern TEXT,
+    actual_pattern TEXT,
+    is_correct INTEGER DEFAULT 0,
+    hesitation_ms INTEGER,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (session_id) REFERENCES exercise_sessions(id)
+  );
+
+  -- Intervention history to evaluate effectiveness over time.
+  CREATE TABLE IF NOT EXISTS intervention_history (
+    id TEXT PRIMARY KEY,
+    student_id TEXT NOT NULL,
+    teacher_id TEXT NOT NULL,
+    intervention_type TEXT NOT NULL,
+    intervention_note TEXT,
+    assigned_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    completed_at TEXT,
+    outcome_score INTEGER,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (teacher_id) REFERENCES teachers(id)
+  );
 `);
 
 // Add new columns to existing tables if they don't exist

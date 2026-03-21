@@ -15,7 +15,7 @@ export default async function DashboardPage() {
   if (session.role === "admin") redirect("/dashboard/admin");
 
   const students = db
-    .prepare("SELECT id, name, grade, progress_percent, current_focus, recent_activity FROM students WHERE teacher_id = ? ORDER BY name")
+    .prepare("SELECT id, name, grade, progress_percent, current_focus, recent_activity, updated_at FROM students WHERE teacher_id = ? ORDER BY name")
     .all(session.id) as Array<{
       id: string;
       name: string;
@@ -23,11 +23,49 @@ export default async function DashboardPage() {
       progress_percent: number;
       current_focus?: string;
       recent_activity?: string;
+      updated_at?: string;
     }>;
 
   const avgProgress = students.length
     ? Math.round(students.reduce((sum, s) => sum + s.progress_percent, 0) / students.length)
     : 0;
+
+  const teachingFeed = students
+    .map((s) => {
+      let risk = 0;
+      const reasons: string[] = [];
+      if (s.progress_percent < 50) {
+        risk += 45;
+        reasons.push("Low progress baseline");
+      } else if (s.progress_percent < 65) {
+        risk += 25;
+        reasons.push("Progress below target band");
+      }
+
+      const activity = (s.recent_activity || "").toLowerCase();
+      if (activity.includes("needs") || activity.includes("reinforcement") || activity.includes("struggle")) {
+        risk += 25;
+        reasons.push("Recent struggle signal");
+      }
+
+      const updated = s.updated_at ? new Date(s.updated_at).getTime() : 0;
+      const hoursSince = updated ? Math.round((Date.now() - updated) / 36e5) : 999;
+      if (hoursSince > 72) {
+        risk += 20;
+        reasons.push("Inactivity > 72h");
+      }
+
+      const recommendation =
+        s.progress_percent < 55
+          ? "Run Dot Recognition Reinforcement (8 min)"
+          : activity.includes("reinforcement")
+            ? "Review targeted confusion set (dots 2/5/6)"
+            : "Run Fluency Builder Level 2";
+
+      return { ...s, risk, reasons, recommendation, hoursSince };
+    })
+    .sort((a, b) => b.risk - a.risk)
+    .slice(0, 6);
 
   const inbox = db.prepare(`
     SELECT m.id, m.subject, m.body, m.is_read, m.created_at, p.name as parent_name, s.name as student_name
@@ -54,6 +92,28 @@ export default async function DashboardPage() {
           <div className="flex gap-3">
             <Link href="/dashboard/students/new" className="btn-primary">New student</Link>
             <LogoutButton />
+          </div>
+        </div>
+
+        <div className="mt-10 rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
+          <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Today’s Teaching Feed</div>
+          <p className="mt-2 text-sm text-slate-600">Prioritized students needing immediate attention with suggested next actions.</p>
+          <div className="mt-5 grid gap-4">
+            {teachingFeed.map((item) => (
+              <Link key={item.id} href={`/dashboard/students/${item.id}`} className="rounded-xl border border-slate-100 p-4 transition hover:border-[var(--bb-teal)]/35 hover:bg-[#f7fefe]">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-900">{item.name}</div>
+                    <div className="mt-1 text-xs text-slate-500">Risk score: {item.risk} • Last update: {item.hoursSince > 900 ? "Unknown" : `${item.hoursSince}h ago`}</div>
+                  </div>
+                  <div className={`rounded-full px-3 py-1 text-xs font-semibold ${item.risk >= 60 ? 'bg-[#ffe8e3] text-[#b94733]' : item.risk >= 35 ? 'bg-[#fff4df] text-[#9a6a1c]' : 'bg-[#e8f8f8] text-[var(--bb-dark-teal)]'}`}>
+                    {item.risk >= 60 ? 'High priority' : item.risk >= 35 ? 'Watch' : 'Stable'}
+                  </div>
+                </div>
+                <div className="mt-3 text-sm text-slate-700"><strong>Suggested action:</strong> {item.recommendation}</div>
+                <div className="mt-1 text-xs text-slate-500">{item.reasons.length ? item.reasons.join(" • ") : "No active risk flags"}</div>
+              </Link>
+            ))}
           </div>
         </div>
 
@@ -84,34 +144,6 @@ export default async function DashboardPage() {
               </div>
             ))}
             {inbox.length === 0 ? <div className="text-sm text-slate-500">No messages yet.</div> : null}
-          </div>
-        </div>
-
-        <div className="mt-10 rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
-          <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Student progress</div>
-          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Current classroom view</h2>
-
-          <div className="mt-8 grid gap-5">
-            {students.map((student) => (
-              <Link key={student.id} href={`/dashboard/students/${student.id}`} className="rounded-[1.6rem] border border-black/8 p-6 transition hover:-translate-y-[2px] hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div>
-                    <h3 className="text-2xl font-semibold tracking-[-0.03em]">{student.name}</h3>
-                    <p className="mt-2 text-sm text-slate-500">{student.grade || "Student"}</p>
-                  </div>
-                  <div className="min-w-[220px]">
-                    <div className="mb-2 flex items-center justify-between text-sm text-slate-600"><span>Progress</span><span>{student.progress_percent}%</span></div>
-                    <div className="h-3 overflow-hidden rounded-full bg-slate-100">
-                      <div className="h-full rounded-full bg-gradient-to-r from-[var(--bb-dark-teal)] to-[var(--bb-teal)]" style={{ width: `${student.progress_percent}%` }} />
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-5 grid gap-4 lg:grid-cols-2">
-                  <div className="rounded-[1.2rem] bg-[#f8fbfb] p-4"><div className="text-xs uppercase tracking-[0.18em] text-slate-500">Current focus</div><div className="mt-2 text-sm leading-7 text-slate-700">{student.current_focus || "No current focus set"}</div></div>
-                  <div className="rounded-[1.2rem] bg-[#f8fbfb] p-4"><div className="text-xs uppercase tracking-[0.18em] text-slate-500">Recent activity</div><div className="mt-2 text-sm leading-7 text-slate-700">{student.recent_activity || "No recent activity recorded"}</div></div>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
