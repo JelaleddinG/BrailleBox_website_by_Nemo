@@ -26,7 +26,7 @@ export function AdminReportButton({ studentId, studentName }: { studentId: strin
 
   return (
     <div className="flex items-center gap-2">
-      <button onClick={generate} className="btn-admin">Generate report</button>
+      <button onClick={generate} className="btn-admin-report">Generate report</button>
       {status ? <span className="text-xs text-slate-500">{status}</span> : null}
     </div>
   );

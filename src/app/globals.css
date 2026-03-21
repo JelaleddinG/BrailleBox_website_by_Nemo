@@ -120,6 +120,23 @@ img { max-width: 100%; height: auto; }
   transform: translateY(-1px);
 }
 
+.btn-admin-report {
+  border-radius: 12px;
+  padding: 0.62rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  border: 1px solid rgba(87,183,217,0.38);
+  background: linear-gradient(135deg, #4baed2 0%, #57b7d9 100%);
+  box-shadow: 0 10px 20px rgba(87,183,217,0.26);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+.btn-admin-report:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.06);
+  box-shadow: 0 14px 28px rgba(87,183,217,0.32);
+}
+
 .nav-auth-btn {
   min-width: 118px;
   height: 44px;
