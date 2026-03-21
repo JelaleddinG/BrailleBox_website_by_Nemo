@@ -59,7 +59,7 @@ export function RegisterForm() {
       return;
     }
 
-    setMessage(`Verification code for ${json.email}: ${json.verificationCode}`);
+    setMessage(json.delivery || (json.verificationCode ? `Verification code for ${json.email}: ${json.verificationCode}` : "Verification step ready."));
     setLoading(false);
     router.push(`/verify?email=${encodeURIComponent(form.email)}`);
   };
@@ -103,7 +103,7 @@ export function RegisterForm() {
       ) : null}
 
       {form.city || form.state || form.district ? (
-        <div className="rounded-xl border border-white/12 bg-white/90 px-4 py-3 text-xs text-slate-700">
+        <div className="rounded-xl border border-[var(--bb-teal)]/35 bg-[linear-gradient(135deg,rgba(1,194,194,0.08),rgba(87,183,217,0.08))] px-4 py-3 text-xs text-slate-700">
           <span className="font-semibold">Location selected:</span>{" "}
           {[form.city, form.state, form.district].filter(Boolean).join(" • ")}
           <button

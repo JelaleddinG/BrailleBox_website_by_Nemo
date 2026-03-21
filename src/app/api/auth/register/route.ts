@@ -3,6 +3,41 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { generateVerificationCode } from "@/lib/auth";
 
+async function sendVerificationEmail(to: string, code: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return { ok: false as const, reason: "missing_api_key" };
+
+  const html = `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#0f172a;line-height:1.5;">
+      <h2 style="margin:0 0 10px;">BrailleBox verification code</h2>
+      <p style="margin:0 0 8px;">Use this code to complete your registration:</p>
+      <div style="font-size:28px;font-weight:700;letter-spacing:2px;margin:12px 0;">${code}</div>
+      <p style="margin:0;color:#475569;">This code expires in 15 minutes.</p>
+    </div>
+  `;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "BrailleBox <onboarding@resend.dev>",
+      to: [to],
+      subject: "Your BrailleBox verification code",
+      html,
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    return { ok: false as const, reason: `resend_error:${res.status}:${text}` };
+  }
+
+  return { ok: true as const };
+}
+
 export async function POST(req: Request) {
   const body = await req.json();
   const name = String(body.name || "").trim();
@@ -50,6 +85,7 @@ export async function POST(req: Request) {
   const clearVerificationCodesForUser = (userId: string) => {
     if (verificationColumns.has("user_id")) db.prepare("DELETE FROM verification_codes WHERE user_id = ?").run(userId);
     else if (verificationColumns.has("teacher_id")) db.prepare("DELETE FROM verification_codes WHERE teacher_id = ?").run(userId);
+    else db.prepare("DELETE FROM verification_codes WHERE email = ?").run(email);
   };
 
   const existingTeacher = db.prepare("SELECT id, is_verified FROM teachers WHERE email = ?").get(email) as { id: string; is_verified?: number } | undefined;
@@ -71,7 +107,15 @@ export async function POST(req: Request) {
 
     clearVerificationCodesForUser(existing.userId);
     insertVerificationCode(existing.userId, existing.userType);
-    return NextResponse.json({ ok: true, email, verificationCode: code, role: existing.userType, delivery: "Account exists but was unverified. New verification code generated." });
+    const sent = await sendVerificationEmail(email, code);
+
+    return NextResponse.json({
+      ok: true,
+      email,
+      role: existing.userType,
+      delivery: sent.ok ? "Verification email sent." : `Verification code generated but email send failed (${sent.reason}).`,
+      verificationCode: sent.ok ? undefined : code,
+    });
   }
 
   let school = db.prepare("SELECT id FROM schools WHERE name = ?").get(schoolName) as { id: string } | undefined;
@@ -99,6 +143,13 @@ export async function POST(req: Request) {
   }
 
   insertVerificationCode(userId, role);
+  const sent = await sendVerificationEmail(email, code);
 
-  return NextResponse.json({ ok: true, email, verificationCode: code, role, delivery: "Email sending not configured yet. Use the verification code shown to verify locally." });
+  return NextResponse.json({
+    ok: true,
+    email,
+    role,
+    delivery: sent.ok ? "Verification email sent." : `Verification code generated but email send failed (${sent.reason}).`,
+    verificationCode: sent.ok ? undefined : code,
+  });
 }
