@@ -37,7 +37,7 @@ export default async function LoginPage() {
             <div className="mb-5 h-[2px] w-16 rounded-full bg-[var(--bb-blue)]/80" />
             <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white">School Admin</h2>
             <p className="mt-3 text-sm text-white/80">Manage accounts and generate compliance reports.</p>
-            <div className="mt-6 text-sm font-medium text-white">Login →</div>
+            <div className="mt-6 text-sm font-medium text-[var(--bb-blue)]">Login →</div>
           </Link>
         </div>
 

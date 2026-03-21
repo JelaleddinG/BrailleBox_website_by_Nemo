@@ -10,8 +10,8 @@ import { ExerciseCategories } from "@/components/dashboard/exercise-categories";
 import { ActivityVisual } from "@/components/dashboard/activity-visual";
 import { EditStudentSummaryForm } from "@/components/dashboard/edit-student-summary-form";
 import { LinkParentForm } from "@/components/dashboard/link-parent-form";
-import { AISummaryEditAssistant } from "@/components/dashboard/ai-summary-edit-assistant";
-import { AIReportButton } from "@/components/dashboard/ai-report-button";
+import { SummaryEditAssistant } from "@/components/dashboard/ai-summary-edit-assistant";
+import { ReportButton } from "@/components/dashboard/ai-report-button";
 
 export default async function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
@@ -35,7 +35,7 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
             <Link href="/dashboard" className="btn-dark">Back to dashboard</Link>
             <DeviceConnectButton studentId={student.id} connected={Boolean(student.device_connected)} deviceName={student.device_name} />
             <AIProfileButton studentId={student.id} />
-            <AIReportButton studentId={student.id} studentName={student.name} />
+            <ReportButton studentId={student.id} studentName={student.name} />
           </div>
         </div>
 
@@ -59,7 +59,7 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
         </div>
 
         <LinkParentForm studentId={student.id} />
-        <AISummaryEditAssistant studentId={student.id} />
+        <SummaryEditAssistant studentId={student.id} />
 
         <ExerciseCategories studentId={student.id} connected={Boolean(student.device_connected)} />
         <ActivityVisual visual={student.activity_visual} />
