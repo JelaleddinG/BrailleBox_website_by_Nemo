@@ -9,6 +9,8 @@ import { LogoutButton } from "@/components/logout-button";
 export default async function DashboardPage() {
   const session = await getSession();
   if (!session) redirect("/login");
+  if (session.role === "parent") redirect("/dashboard/parent");
+  if (session.role === "admin") redirect("/dashboard/admin");
 
   const students = db
     .prepare("SELECT id, name, grade, progress_percent, current_focus, recent_activity FROM students WHERE teacher_id = ? ORDER BY name")

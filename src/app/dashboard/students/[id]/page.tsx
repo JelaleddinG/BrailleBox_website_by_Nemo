@@ -8,6 +8,7 @@ import { AIProfileButton } from "@/components/dashboard/ai-profile-button";
 import { DeviceConnectButton } from "@/components/dashboard/device-connect-button";
 import { ExerciseCategories } from "@/components/dashboard/exercise-categories";
 import { ActivityVisual } from "@/components/dashboard/activity-visual";
+import { EditStudentSummaryForm } from "@/components/dashboard/edit-student-summary-form";
 
 export default async function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
@@ -105,6 +106,17 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
 
         <ExerciseCategories studentId={student.id} connected={Boolean(student.device_connected)} />
         <ActivityVisual visual={student.activity_visual} />
+
+        <EditStudentSummaryForm
+          studentId={student.id}
+          initial={{
+            profile_summary: student.profile_summary,
+            strengths: student.strengths,
+            support_needs: student.support_needs,
+            goals: student.goals,
+            notes: student.notes,
+          }}
+        />
 
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           <div className="rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
