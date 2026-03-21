@@ -19,33 +19,58 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Name, email, school, and password are required." }, { status: 400 });
   }
 
+  const verificationColumns = new Set(
+    (db.prepare("PRAGMA table_info(verification_codes)").all() as Array<{ name: string }>).map((c) => c.name),
+  );
+
+  const code = generateVerificationCode();
+  const expiresAt = new Date(Date.now() + 1000 * 60 * 15).toISOString();
+
+  const insertVerificationCode = (userId: string, userType: string) => {
+    const fields = ["id", "email", "code", "expires_at"];
+    const values: any[] = [crypto.randomUUID(), email, code, expiresAt];
+
+    if (verificationColumns.has("user_id")) {
+      fields.push("user_id");
+      values.push(userId);
+    }
+    if (verificationColumns.has("user_type")) {
+      fields.push("user_type");
+      values.push(userType);
+    }
+    if (verificationColumns.has("teacher_id")) {
+      fields.push("teacher_id");
+      values.push(userId);
+    }
+
+    const placeholders = fields.map(() => "?").join(", ");
+    db.prepare(`INSERT INTO verification_codes (${fields.join(", ")}) VALUES (${placeholders})`).run(...values);
+  };
+
+  const clearVerificationCodesForUser = (userId: string) => {
+    if (verificationColumns.has("user_id")) db.prepare("DELETE FROM verification_codes WHERE user_id = ?").run(userId);
+    else if (verificationColumns.has("teacher_id")) db.prepare("DELETE FROM verification_codes WHERE teacher_id = ?").run(userId);
+  };
+
   const existingTeacher = db.prepare("SELECT id, is_verified FROM teachers WHERE email = ?").get(email) as { id: string; is_verified?: number } | undefined;
   const existingParent = db.prepare("SELECT id, is_verified FROM parents WHERE email = ?").get(email) as { id: string; is_verified?: number } | undefined;
   const existingAdmin = db.prepare("SELECT id, is_verified FROM school_admins WHERE email = ?").get(email) as { id: string; is_verified?: number } | undefined;
 
-  const existing = existingTeacher ? { userId: existingTeacher.id, userType: "teacher", verified: !!existingTeacher.is_verified }
-    : existingParent ? { userId: existingParent.id, userType: "parent", verified: !!existingParent.is_verified }
-    : existingAdmin ? { userId: existingAdmin.id, userType: "admin", verified: !!existingAdmin.is_verified }
-    : null;
-
-  const code = generateVerificationCode();
-  const expiresAt = new Date(Date.now() + 1000 * 60 * 15).toISOString();
+  const existing = existingTeacher
+    ? { userId: existingTeacher.id, userType: "teacher", verified: !!existingTeacher.is_verified }
+    : existingParent
+      ? { userId: existingParent.id, userType: "parent", verified: !!existingParent.is_verified }
+      : existingAdmin
+        ? { userId: existingAdmin.id, userType: "admin", verified: !!existingAdmin.is_verified }
+        : null;
 
   if (existing) {
     if (existing.verified) {
       return NextResponse.json({ error: "An account with this email already exists and is verified." }, { status: 409 });
     }
 
-    db.prepare("DELETE FROM verification_codes WHERE user_id = ?").run(existing.userId);
-    db.prepare("INSERT INTO verification_codes (id, user_id, user_type, email, code, expires_at) VALUES (?, ?, ?, ?, ?, ?)").run(
-      crypto.randomUUID(),
-      existing.userId,
-      existing.userType,
-      email,
-      code,
-      expiresAt,
-    );
-
+    clearVerificationCodesForUser(existing.userId);
+    insertVerificationCode(existing.userId, existing.userType);
     return NextResponse.json({ ok: true, email, verificationCode: code, role: existing.userType, delivery: "Account exists but was unverified. New verification code generated." });
   }
 
@@ -66,21 +91,14 @@ export async function POST(req: Request) {
   const passwordHash = await bcrypt.hash(password, 10);
 
   if (role === "parent") {
-    db.prepare(`INSERT INTO parents (id, name, email, password_hash, school_id, is_verified) VALUES (?, ?, ?, ?, ?, 0)`).run(userId, name, email, passwordHash, school.id);
+    db.prepare("INSERT INTO parents (id, name, email, password_hash, school_id, is_verified) VALUES (?, ?, ?, ?, ?, 0)").run(userId, name, email, passwordHash, school.id);
   } else if (role === "admin") {
-    db.prepare(`INSERT INTO school_admins (id, name, email, password_hash, school_id, admin_level, is_verified) VALUES (?, ?, ?, ?, ?, ?, 0)`).run(userId, name, email, passwordHash, school.id, "school");
+    db.prepare("INSERT INTO school_admins (id, name, email, password_hash, school_id, admin_level, is_verified) VALUES (?, ?, ?, ?, ?, ?, 0)").run(userId, name, email, passwordHash, school.id, "school");
   } else {
-    db.prepare(`INSERT INTO teachers (id, name, email, password_hash, school_id, organization, role, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, 0)`).run(userId, name, email, passwordHash, school.id, organization || schoolName, "Teacher of the Visually Impaired");
+    db.prepare("INSERT INTO teachers (id, name, email, password_hash, school_id, organization, role, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, 0)").run(userId, name, email, passwordHash, school.id, organization || schoolName, "Teacher of the Visually Impaired");
   }
 
-  db.prepare("INSERT INTO verification_codes (id, user_id, user_type, email, code, expires_at) VALUES (?, ?, ?, ?, ?, ?)").run(
-    crypto.randomUUID(),
-    userId,
-    role,
-    email,
-    code,
-    expiresAt,
-  );
+  insertVerificationCode(userId, role);
 
   return NextResponse.json({ ok: true, email, verificationCode: code, role, delivery: "Email sending not configured yet. Use the verification code shown to verify locally." });
 }
