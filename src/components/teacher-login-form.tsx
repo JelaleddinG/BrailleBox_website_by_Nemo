@@ -59,7 +59,7 @@ export function TeacherLoginForm() {
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="px-4 text-sm font-medium text-slate-500 transition hover:bg-black/5 hover:text-slate-600"
+            className="px-4 text-sm font-medium text-slate-500 transition hover:opacity-70"
           >
             {showPassword ? "Hide" : "Show"}
           </button>

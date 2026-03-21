@@ -80,7 +80,7 @@ export function RegisterForm() {
       <input
         value={locationQuery}
         onChange={(e) => setLocationQuery(e.target.value)}
-        placeholder="Search city/state/district (autocomplete)"
+        placeholder="Search city/state/district"
         className="w-full rounded-2xl border border-white/12 bg-white/95 px-4 py-3 text-slate-950 outline-none"
       />
       {locationResults.length > 0 ? (
@@ -102,11 +102,22 @@ export function RegisterForm() {
         </div>
       ) : null}
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <input value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} placeholder="City" className="w-full rounded-2xl border border-white/12 bg-white/95 px-4 py-3 text-slate-950 outline-none" />
-        <input value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} placeholder="State" className="w-full rounded-2xl border border-white/12 bg-white/95 px-4 py-3 text-slate-950 outline-none" />
-        <input value={form.district} onChange={(e) => setForm({ ...form, district: e.target.value })} placeholder="District" className="w-full rounded-2xl border border-white/12 bg-white/95 px-4 py-3 text-slate-950 outline-none" />
-      </div>
+      {form.city || form.state || form.district ? (
+        <div className="rounded-xl border border-white/12 bg-white/90 px-4 py-3 text-xs text-slate-700">
+          <span className="font-semibold">Location selected:</span>{" "}
+          {[form.city, form.state, form.district].filter(Boolean).join(" • ")}
+          <button
+            type="button"
+            onClick={() => {
+              setForm({ ...form, city: "", state: "", district: "" });
+              setLocationQuery("");
+            }}
+            className="ml-2 text-slate-500 hover:opacity-70"
+          >
+            Clear
+          </button>
+        </div>
+      ) : null}
 
       <div className="grid gap-4 md:grid-cols-2">
         <input value={form.school} onChange={(e) => setForm({ ...form, school: e.target.value })} placeholder="School / Organization name" className="w-full rounded-2xl border border-white/12 bg-white/95 px-4 py-3 text-slate-950 outline-none" required />
@@ -115,11 +126,7 @@ export function RegisterForm() {
 
       <div className="flex overflow-hidden rounded-2xl border border-white/12 bg-white/95">
         <input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} type={showPassword ? "text" : "password"} placeholder="Password" className="w-full px-4 py-3 text-slate-950 outline-none" required />
-        <button
-          type="button"
-          onClick={() => setShowPassword((v) => !v)}
-          className="px-4 text-sm font-medium text-slate-500 transition hover:bg-black/5 hover:text-slate-600"
-        >
+        <button type="button" onClick={() => setShowPassword((v) => !v)} className="px-4 text-sm font-medium text-slate-500 transition hover:opacity-70">
           {showPassword ? "Hide" : "Show"}
         </button>
       </div>
