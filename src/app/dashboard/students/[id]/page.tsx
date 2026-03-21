@@ -14,6 +14,8 @@ import { SummaryEditAssistant } from "@/components/dashboard/ai-summary-edit-ass
 import { ReportButton } from "@/components/dashboard/ai-report-button";
 import { LessonQuickPlanner } from "@/components/dashboard/lesson-quick-planner";
 import { TeacherMessageTemplatePanel } from "@/components/teacher-message-template-panel";
+import { StudentDiagnosticsPanel } from "@/components/dashboard/student-diagnostics-panel";
+import { LiveSessionPanel } from "@/components/dashboard/live-session-panel";
 
 export default async function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
@@ -30,6 +32,42 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
     WHERE ps.student_id = ?
     ORDER BY p.name
   `).all(student.id) as Array<{ id: string; name: string; email: string }>;
+
+  const events = db.prepare(`
+    SELECT expected_pattern, actual_pattern, is_correct, hesitation_ms
+    FROM student_error_events
+    WHERE student_id = ?
+    ORDER BY created_at DESC
+    LIMIT 120
+  `).all(student.id) as Array<{ expected_pattern?: string; actual_pattern?: string; is_correct?: number; hesitation_ms?: number }>;
+
+  const correct = events.filter((e) => e.is_correct).length;
+  const accuracy = events.length ? Math.round((correct / events.length) * 100) : student.progress_percent || 0;
+  const avgHesitationSec = events.length
+    ? Math.round((events.reduce((sum, e) => sum + (e.hesitation_ms || 0), 0) / events.length) / 1000)
+    : 0;
+
+  const confusionMap = new Map<string, number>();
+  events.forEach((e) => {
+    if (!e.is_correct && e.expected_pattern && e.actual_pattern) {
+      const key = `${e.expected_pattern}->${e.actual_pattern}`;
+      confusionMap.set(key, (confusionMap.get(key) || 0) + 1);
+    }
+  });
+  const topConfusions = [...confusionMap.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => k);
+
+  const interventions = db.prepare(`
+    SELECT outcome_score
+    FROM intervention_history
+    WHERE student_id = ? AND outcome_score IS NOT NULL
+    ORDER BY assigned_at DESC
+    LIMIT 30
+  `).all(student.id) as Array<{ outcome_score?: number }>;
+  const interventionSuccess = interventions.length
+    ? Math.round(interventions.reduce((s, i) => s + (i.outcome_score || 0), 0) / interventions.length)
+    : 0;
+
+  const retentionRisk = avgHesitationSec >= 6 || accuracy < 60 ? "High" : avgHesitationSec >= 4 || accuracy < 75 ? "Medium" : "Low";
 
   return (
     <main className="min-h-screen bg-[#f8fbfb] text-slate-950">
@@ -59,6 +97,9 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
         <LinkParentForm studentId={student.id} />
         <LessonQuickPlanner studentId={student.id} />
         <SummaryEditAssistant studentId={student.id} />
+
+        <StudentDiagnosticsPanel diagnostics={{ accuracy, avgHesitationSec, topConfusions, retentionRisk, interventionSuccess }} />
+        <LiveSessionPanel studentId={student.id} />
 
         {linkedParents.length > 0 ? (
           <div className="mt-6 rounded-[1.2rem] bg-white p-4 shadow-[0_10px_26px_rgba(15,23,42,0.06)]">

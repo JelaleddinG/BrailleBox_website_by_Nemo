@@ -12,7 +12,12 @@ export default async function AdminDashboardPage() {
 
   const teachers = db.prepare("SELECT id, name, email FROM teachers WHERE school_id = ? ORDER BY name").all(session.schoolId) as Array<any>;
   const parents = db.prepare("SELECT id, name, email FROM parents WHERE school_id = ? ORDER BY name").all(session.schoolId) as Array<any>;
-  const students = db.prepare("SELECT id, name, grade FROM students WHERE teacher_id IN (SELECT id FROM teachers WHERE school_id = ?) ORDER BY name").all(session.schoolId) as Array<any>;
+  const students = db.prepare("SELECT id, name, grade, progress_percent FROM students WHERE teacher_id IN (SELECT id FROM teachers WHERE school_id = ?) ORDER BY name").all(session.schoolId) as Array<any>;
+
+  const avgLiteracyImprovement = students.length ? Math.round(students.reduce((s, i) => s + (i.progress_percent || 0), 0) / students.length) : 0;
+  const activeTeachers = db.prepare("SELECT COUNT(DISTINCT teacher_id) as count FROM students WHERE teacher_id IN (SELECT id FROM teachers WHERE school_id = ?)").get(session.schoolId) as { count: number };
+  const interventionRows = db.prepare("SELECT outcome_score FROM intervention_history WHERE teacher_id IN (SELECT id FROM teachers WHERE school_id = ?) AND outcome_score IS NOT NULL").all(session.schoolId) as Array<{ outcome_score?: number }>;
+  const interventionSuccessRate = interventionRows.length ? Math.round(interventionRows.reduce((s, i) => s + (i.outcome_score || 0), 0) / interventionRows.length) : 0;
 
   return (
     <main className="min-h-screen bg-[#f5fbff] text-slate-950">
@@ -28,6 +33,15 @@ export default async function AdminDashboardPage() {
           <div className="rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"><div className="text-sm text-slate-500">Teachers</div><div className="mt-2 text-4xl font-semibold text-[var(--bb-blue)]">{teachers.length}</div></div>
           <div className="rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"><div className="text-sm text-slate-500">Parents</div><div className="mt-2 text-4xl font-semibold text-[var(--bb-blue)]">{parents.length}</div></div>
           <div className="rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"><div className="text-sm text-slate-500">Students</div><div className="mt-2 text-4xl font-semibold text-[var(--bb-blue)]">{students.length}</div></div>
+        </div>
+
+        <div className="mt-8 rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]">
+          <h2 className="text-xl font-semibold">District outcomes snapshot</h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <div className="rounded-xl bg-[#f5fbff] p-4 text-sm text-slate-700"><strong>Average literacy improvement:</strong> {avgLiteracyImprovement}%</div>
+            <div className="rounded-xl bg-[#f5fbff] p-4 text-sm text-slate-700"><strong>Teacher engagement:</strong> {activeTeachers.count}/{teachers.length} active</div>
+            <div className="rounded-xl bg-[#f5fbff] p-4 text-sm text-slate-700"><strong>Intervention success:</strong> {interventionSuccessRate}%</div>
+          </div>
         </div>
 
         <div className="mt-8 rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]">

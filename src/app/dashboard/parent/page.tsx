@@ -31,6 +31,11 @@ export default async function ParentDashboardPage() {
           <p className="mt-4 text-lg leading-8 text-slate-600">Here is your child&apos;s current progress in simple terms.</p>
         </div>
 
+        <div className="mt-8 rounded-[1.6rem] border border-black/8 bg-white p-6 shadow-[0_12px_34px_rgba(15,23,42,0.06)]">
+          <div className="text-sm uppercase tracking-[0.2em] text-[var(--bb-orange)]">Weekly digest</div>
+          <p className="mt-2 text-sm text-slate-700">Your child is improving through consistent guided sessions. Focus this week: reinforcement + confidence during independent recall. Keep celebrating small wins.</p>
+        </div>
+
         <div className="mt-10 grid gap-6">
           {students.map((student) => (
             <div key={student.id} className="rounded-[1.8rem] border border-black/8 bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]">
