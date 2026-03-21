@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { ParentMessagePanel } from "@/components/parent-message-panel";
 
 export default async function ParentDashboardPage() {
   const session = await getSession();
@@ -11,7 +12,7 @@ export default async function ParentDashboardPage() {
 
   const students = db.prepare(`
     SELECT s.id, s.name, s.grade, s.progress_percent, s.current_focus, s.recent_activity, s.profile_summary, s.notes,
-           t.name as teacher_name
+           t.id as teacher_id, t.name as teacher_name
     FROM parent_student ps
     JOIN students s ON ps.student_id = s.id
     JOIN teachers t ON s.teacher_id = t.id
@@ -42,16 +43,23 @@ export default async function ParentDashboardPage() {
                   <div className="text-3xl font-semibold text-[var(--bb-orange)]">{student.progress_percent}%</div>
                 </div>
               </div>
+
               <p className="mt-4 text-slate-700"><strong>Focus:</strong> {student.current_focus || "Teacher is setting goals."}</p>
               <p className="mt-2 text-slate-700"><strong>Recent activity:</strong> {student.recent_activity || "No recent activity yet."}</p>
+
               <details className="mt-4 rounded-xl bg-[#fff3ef] p-4">
                 <summary className="cursor-pointer font-medium text-[var(--bb-orange)]">View detailed notes</summary>
                 <p className="mt-3 text-sm leading-7 text-slate-700">{student.profile_summary || "No detailed summary yet."}</p>
                 <p className="mt-2 text-sm leading-7 text-slate-700"><strong>Teacher comments:</strong> {student.notes || "No comments yet."}</p>
               </details>
+
+              <ParentMessagePanel teacherId={student.teacher_id} studentId={student.id} />
             </div>
           ))}
-          {students.length === 0 ? <div className="rounded-2xl bg-white p-8 text-slate-600">No students linked yet. Ask your teacher to connect your parent account.</div> : null}
+
+          {students.length === 0 ? (
+            <div className="rounded-2xl bg-white p-8 text-slate-600">No students linked yet. Ask your teacher to connect your parent account.</div>
+          ) : null}
         </div>
       </section>
       <SiteFooter />

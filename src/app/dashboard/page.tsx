@@ -27,6 +27,16 @@ export default async function DashboardPage() {
     ? Math.round(students.reduce((sum, s) => sum + s.progress_percent, 0) / students.length)
     : 0;
 
+  const inbox = db.prepare(`
+    SELECT m.id, m.subject, m.body, m.created_at, p.name as parent_name, s.name as student_name
+    FROM messages m
+    LEFT JOIN parents p ON m.sender_id = p.id
+    LEFT JOIN students s ON m.student_id = s.id
+    WHERE m.recipient_id = ? AND m.recipient_type = 'teacher'
+    ORDER BY m.created_at DESC
+    LIMIT 6
+  `).all(session.id) as Array<{ id: string; subject?: string; body: string; created_at: string; parent_name?: string; student_name?: string }>;
+
   return (
     <main className="min-h-screen bg-[#f8fbfb] text-slate-950">
       <SiteHeader />
@@ -57,6 +67,20 @@ export default async function DashboardPage() {
           <div className="rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
             <div className="text-sm uppercase tracking-[0.2em] text-slate-500">School</div>
             <div className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-slate-950">{session.school || "BrailleBox"}</div>
+          </div>
+        </div>
+
+        <div className="mt-8 rounded-[2rem] bg-white p-8 shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
+          <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Parent messages</div>
+          <div className="mt-4 grid gap-3">
+            {inbox.map((m) => (
+              <div key={m.id} className="rounded-xl border border-slate-100 p-4">
+                <div className="text-xs text-slate-500">{m.parent_name || 'Parent'} {m.student_name ? `• ${m.student_name}` : ''}</div>
+                <div className="mt-1 text-sm font-semibold">{m.subject || 'Message'}</div>
+                <div className="mt-1 text-sm text-slate-700">{m.body}</div>
+              </div>
+            ))}
+            {inbox.length === 0 ? <div className="text-sm text-slate-500">No messages yet.</div> : null}
           </div>
         </div>
 

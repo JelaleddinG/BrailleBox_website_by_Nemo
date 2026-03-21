@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { AdminReportButton } from "@/components/admin-report-button";
 
 export default async function AdminDashboardPage() {
   const session = await getSession();
@@ -11,7 +12,7 @@ export default async function AdminDashboardPage() {
 
   const teachers = db.prepare("SELECT id, name, email FROM teachers WHERE school_id = ? ORDER BY name").all(session.schoolId) as Array<any>;
   const parents = db.prepare("SELECT id, name, email FROM parents WHERE school_id = ? ORDER BY name").all(session.schoolId) as Array<any>;
-  const students = db.prepare("SELECT id, name, grade, teacher_id FROM students WHERE teacher_id IN (SELECT id FROM teachers WHERE school_id = ?) ORDER BY name").all(session.schoolId) as Array<any>;
+  const students = db.prepare("SELECT id, name, grade FROM students WHERE teacher_id IN (SELECT id FROM teachers WHERE school_id = ?) ORDER BY name").all(session.schoolId) as Array<any>;
 
   return (
     <main className="min-h-screen bg-[#f5fbff] text-slate-950">
@@ -27,6 +28,19 @@ export default async function AdminDashboardPage() {
           <div className="rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"><div className="text-sm text-slate-500">Teachers</div><div className="mt-2 text-4xl font-semibold text-[var(--bb-blue)]">{teachers.length}</div></div>
           <div className="rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"><div className="text-sm text-slate-500">Parents</div><div className="mt-2 text-4xl font-semibold text-[var(--bb-blue)]">{parents.length}</div></div>
           <div className="rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"><div className="text-sm text-slate-500">Students</div><div className="mt-2 text-4xl font-semibold text-[var(--bb-blue)]">{students.length}</div></div>
+        </div>
+
+        <div className="mt-8 rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]">
+          <h2 className="text-xl font-semibold">Compliance report generator</h2>
+          <p className="mt-2 text-sm text-slate-600">Generate per-student reports without opening full student detail pages.</p>
+          <div className="mt-4 grid gap-3">
+            {students.map((s) => (
+              <div key={s.id} className="flex items-center justify-between rounded-xl border border-slate-100 p-3">
+                <div className="text-sm text-slate-700">{s.name} {s.grade ? `• ${s.grade}` : ""}</div>
+                <AdminReportButton studentId={s.id} studentName={s.name} />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2">

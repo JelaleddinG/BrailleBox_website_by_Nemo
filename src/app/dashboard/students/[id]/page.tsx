@@ -9,6 +9,7 @@ import { DeviceConnectButton } from "@/components/dashboard/device-connect-butto
 import { ExerciseCategories } from "@/components/dashboard/exercise-categories";
 import { ActivityVisual } from "@/components/dashboard/activity-visual";
 import { EditStudentSummaryForm } from "@/components/dashboard/edit-student-summary-form";
+import { LinkParentForm } from "@/components/dashboard/link-parent-form";
 
 export default async function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
