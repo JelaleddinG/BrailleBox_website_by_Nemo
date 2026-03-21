@@ -14,6 +14,9 @@ type LiveEvent = {
 export function LiveSessionPanel({ studentId }: { studentId: string }) {
   const [events, setEvents] = useState<LiveEvent[]>([]);
   const [lastConnected, setLastConnected] = useState<string | null>(null);
+  const [syncStatus, setSyncStatus] = useState<string>("unknown");
+  const [sessionState, setSessionState] = useState<string>("idle");
+  const [lastSyncAt, setLastSyncAt] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -24,6 +27,9 @@ export function LiveSessionPanel({ studentId }: { studentId: string }) {
       const live = json.live || {};
       setEvents(Array.isArray(live.events) ? live.events : []);
       setLastConnected(live.lastConnected || null);
+      setSyncStatus(live.syncStatus || "unknown");
+      setSessionState(live.sessionState || "idle");
+      setLastSyncAt(live.lastSyncAt || null);
     };
 
     tick();
@@ -37,7 +43,11 @@ export function LiveSessionPanel({ studentId }: { studentId: string }) {
   return (
     <div className="mt-6 rounded-[1.2rem] bg-white p-5 shadow-[0_10px_26px_rgba(15,23,42,0.06)]">
       <div className="text-xs uppercase tracking-[0.18em] text-slate-500">Live session monitor</div>
-      <div className="mt-2 text-sm text-slate-600">Last sync: {lastConnected ? new Date(lastConnected).toLocaleString() : "No sync yet"}</div>
+      <div className="mt-2 grid gap-2 text-sm text-slate-600 md:grid-cols-3">
+        <div>Connection: <strong>{syncStatus}</strong></div>
+        <div>Session: <strong>{sessionState}</strong></div>
+        <div>Last sync: <strong>{lastSyncAt ? new Date(lastSyncAt).toLocaleString() : (lastConnected ? new Date(lastConnected).toLocaleString() : "No sync yet")}</strong></div>
+      </div>
       <div className="mt-3 grid gap-2">
         {events.slice(0, 6).map((e, i) => (
           <div key={i} className="rounded-lg border border-slate-100 p-2 text-xs text-slate-700">

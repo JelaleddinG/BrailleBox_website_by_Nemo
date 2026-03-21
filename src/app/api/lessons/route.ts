@@ -39,10 +39,17 @@ export async function POST(req: Request) {
   db.prepare("INSERT INTO lesson_plans (id, teacher_id, student_id, title, objective, status, scheduled_for) VALUES (?, ?, ?, ?, ?, 'scheduled', ?)")
     .run(lessonId, session.id, studentId, "Adaptive Braille Session", objective, scheduledFor);
 
+  const perf = db.prepare("SELECT progress_percent FROM students WHERE id = ?").get(studentId) as { progress_percent?: number } | undefined;
+  const progress = perf?.progress_percent || 0;
+  const recentErrors = db.prepare("SELECT COUNT(*) as c FROM student_error_events WHERE student_id = ? AND is_correct = 0 AND created_at >= datetime('now','-7 days')").get(studentId) as { c: number };
+
+  const baseDifficulty = progress >= 80 ? 3 : progress >= 60 ? 2 : 1;
+  const needsReinforcement = recentErrors.c >= 8;
+
   const templates = [
-    { exercise: "dot-recognition", difficulty: 1, min: 6 },
-    { exercise: "pattern-recall", difficulty: 1, min: 6 },
-    { exercise: "guided-reading", difficulty: 2, min: 8 },
+    { exercise: needsReinforcement ? "dot-reinforcement" : "dot-recognition", difficulty: Math.max(1, baseDifficulty - 1), min: 6 },
+    { exercise: "pattern-recall", difficulty: baseDifficulty, min: 6 },
+    { exercise: progress >= 70 ? "timed-fluency" : "guided-reading", difficulty: Math.min(4, baseDifficulty + (needsReinforcement ? 0 : 1)), min: 8 },
   ];
 
   const insertStep = db.prepare("INSERT INTO lesson_steps (id, lesson_id, step_order, exercise_type, difficulty_level, estimated_min) VALUES (?, ?, ?, ?, ?, ?)");

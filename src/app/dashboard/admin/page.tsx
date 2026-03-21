@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AdminReportButton } from "@/components/admin-report-button";
+import { AdminBoardPacketButton } from "@/components/admin-board-packet-button";
 
 export default async function AdminDashboardPage() {
   const session = await getSession();
@@ -47,6 +48,9 @@ export default async function AdminDashboardPage() {
         <div className="mt-8 rounded-2xl bg-white p-7 shadow-[0_12px_34px_rgba(15,23,42,0.06)]">
           <h2 className="text-xl font-semibold">Compliance report generator</h2>
           <p className="mt-2 text-sm text-slate-600">Generate per-student reports without opening full student detail pages.</p>
+          <div className="mt-4 flex items-center justify-end">
+            <AdminBoardPacketButton />
+          </div>
           <div className="mt-4 grid gap-3">
             {students.map((s) => (
               <div key={s.id} className="flex items-center justify-between rounded-xl border border-slate-100 p-3">

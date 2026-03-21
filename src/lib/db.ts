@@ -253,6 +253,9 @@ const extraColumns: Array<[string, string]> = [
   ["last_exercise_category", "TEXT"],
   ["last_exercise_score", "INTEGER DEFAULT 0"],
   ["activity_visual", "TEXT"],
+  ["device_sync_status", "TEXT"],
+  ["device_last_sync_at", "TEXT"],
+  ["live_session_state", "TEXT"],
   ["created_at", "TEXT"],
   ["updated_at", "TEXT"],
 ];

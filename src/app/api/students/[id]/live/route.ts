@@ -18,11 +18,14 @@ export async function GET(_req: Request, context: { params: Promise<{ id: string
     LIMIT 12
   `).all(id) as Array<any>;
 
-  const lastConnected = db.prepare("SELECT updated_at FROM students WHERE id = ?").get(id) as { updated_at?: string } | undefined;
+  const deviceState = db.prepare("SELECT updated_at, device_sync_status, device_last_sync_at, live_session_state FROM students WHERE id = ?").get(id) as { updated_at?: string; device_sync_status?: string; device_last_sync_at?: string; live_session_state?: string } | undefined;
 
   return NextResponse.json({
     live: {
-      lastConnected: lastConnected?.updated_at || null,
+      lastConnected: deviceState?.updated_at || null,
+      syncStatus: deviceState?.device_sync_status || "unknown",
+      lastSyncAt: deviceState?.device_last_sync_at || null,
+      sessionState: deviceState?.live_session_state || "idle",
       totalRecentEvents: recent.length,
       events: recent,
     },
