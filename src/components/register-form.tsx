@@ -59,8 +59,15 @@ export function RegisterForm() {
       return;
     }
 
-    setMessage(json.delivery || (json.verificationCode ? `Verification code for ${json.email}: ${json.verificationCode}` : "Verification step ready."));
+    const deliveryText = json.delivery || (json.verificationCode ? `Verification code for ${json.email}: ${json.verificationCode}` : "Verification step ready.");
+    setMessage(deliveryText);
     setLoading(false);
+
+    // If provider failed and fallback code is returned, keep user on this screen so they can copy the code.
+    if (json.verificationCode) {
+      return;
+    }
+
     router.push(`/verify?email=${encodeURIComponent(form.email)}`);
   };
 
