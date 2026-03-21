@@ -19,3 +19,61 @@ export function generateStudentDraft(input: DraftInput) {
     preferred_learning_style: `Guided tactile practice with short, structured sessions, repeated patterns, and clear feedback loops.`,
   };
 }
+
+export function applyTeacherSummaryInstruction(currentSummary: string, instruction: string) {
+  const text = instruction.trim();
+  if (!text) return currentSummary;
+
+  const lower = text.toLowerCase();
+  let updated = currentSummary || "";
+
+  if (lower.includes("short") || lower.includes("concise")) {
+    updated = updated.split(".").slice(0, 2).join(".").trim();
+    if (updated && !updated.endsWith(".")) updated += ".";
+  }
+
+  if (lower.includes("detail") || lower.includes("expand")) {
+    updated += ` Additional detail: ${text.replace(/^(please\s*)?/i, "")}.`;
+  }
+
+  if (lower.includes("parent friendly") || lower.includes("simple")) {
+    updated = updated
+      .replace(/foundational/gi, "early")
+      .replace(/consistency/gi, "steady progress")
+      .replace(/independent performance/gi, "working alone")
+      .replace(/instruction/gi, "teaching");
+  }
+
+  if (lower.includes("focus on")) {
+    const focusMatch = text.match(/focus on\s+(.+)/i);
+    if (focusMatch?.[1]) {
+      updated += ` New priority focus: ${focusMatch[1].trim()}.`;
+    }
+  }
+
+  if (!updated.trim()) updated = text;
+  return updated.trim();
+}
+
+export function generateAiProgressReport(input: {
+  studentName: string;
+  grade?: string;
+  progressPercent?: number;
+  currentFocus?: string;
+  recentActivity?: string;
+  strengths?: string;
+  supportNeeds?: string;
+  goals?: string;
+}) {
+  const grade = input.grade || "Student";
+  const progress = typeof input.progressPercent === "number" ? `${input.progressPercent}%` : "N/A";
+
+  return {
+    summary: `${input.studentName} (${grade}) is currently at ${progress} progress with focus on ${input.currentFocus || "core Braille practice"}.`,
+    wins: input.strengths || "Student is engaged and showing steady participation.",
+    support: input.supportNeeds || "Continue structured, guided tactile sessions with immediate feedback.",
+    nextSteps: input.goals || "Increase consistency and confidence in targeted Braille exercises.",
+    recent: input.recentActivity || "No recent activity captured yet.",
+    generatedAt: new Date().toISOString(),
+  };
+}
