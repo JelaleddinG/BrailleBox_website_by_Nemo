@@ -8,20 +8,20 @@ export function AdminReportButton({ studentId, studentName }: { studentId: strin
   const generate = async () => {
     setStatus("Generating...");
     const res = await fetch(`/api/admin/report?studentId=${encodeURIComponent(studentId)}`);
-    const json = await res.json().catch(() => ({}));
     if (!res.ok) {
-      setStatus(json.error || "Failed");
+      const text = await res.text().catch(() => "");
+      setStatus(text || "Failed");
       return;
     }
 
-    const blob = new Blob([JSON.stringify(json.report, null, 2)], { type: "application/json" });
+    const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${studentName.replace(/\s+/g, "_")}_compliance_report.json`;
+    a.download = `${studentName.replace(/\s+/g, "_")}_admin_compliance_report.pdf`;
     a.click();
     URL.revokeObjectURL(url);
-    setStatus("Downloaded");
+    setStatus("Downloaded PDF");
   };
 
   return (
