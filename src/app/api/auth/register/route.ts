@@ -16,6 +16,8 @@ async function sendVerificationEmail(to: string, code: string) {
     </div>
   `;
 
+  const fromEmail = process.env.RESEND_FROM_EMAIL || "BrailleBox <onboarding@resend.dev>";
+
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -23,7 +25,7 @@ async function sendVerificationEmail(to: string, code: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "BrailleBox <onboarding@resend.dev>",
+      from: fromEmail,
       to: [to],
       subject: "Your BrailleBox verification code",
       html,
