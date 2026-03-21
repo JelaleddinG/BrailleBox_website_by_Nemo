@@ -248,4 +248,14 @@ if (studentCount === 0) {
   db.prepare("INSERT OR IGNORE INTO parent_student (id, parent_id, student_id, relationship) VALUES (?, ?, ?, ?)").run(crypto.randomUUID(), parent.id, seedStudents[0].id, "Parent");
 }
 
+// Backfill teacher school_id for older rows created before school_id migration.
+const teachersWithoutSchool = db.prepare("SELECT id, school, organization FROM teachers WHERE school_id IS NULL OR school_id = ''").all() as Array<{ id: string; school?: string; organization?: string }>;
+for (const t of teachersWithoutSchool) {
+  const byOrg = t.organization ? (db.prepare("SELECT id FROM schools WHERE name = ?").get(t.organization) as { id: string } | undefined) : undefined;
+  const bySchool = t.school ? (db.prepare("SELECT id FROM schools WHERE name = ?").get(t.school) as { id: string } | undefined) : undefined;
+  const fallback = db.prepare("SELECT id FROM schools ORDER BY created_at ASC LIMIT 1").get() as { id: string } | undefined;
+  const target = byOrg?.id || bySchool?.id || fallback?.id;
+  if (target) db.prepare("UPDATE teachers SET school_id = ? WHERE id = ?").run(target, t.id);
+}
+
 export { db };
