@@ -15,7 +15,8 @@ export default async function TeacherOnboardingPage() {
     <main className="min-h-screen bg-[#f8fbfb] text-slate-950">
       <SiteHeader />
       <section className="mx-auto max-w-5xl px-6 py-16 lg:px-10">
-        <div className="text-sm uppercase tracking-[0.22em] text-[var(--bb-dark-teal)]">Teacher Onboarding</div>
+        <Link href="/dashboard" className="panel-back">← Back</Link>
+        <div className="mt-2 text-sm uppercase tracking-[0.22em] text-[var(--bb-dark-teal)]">Teacher Onboarding</div>
         <h1 className="mt-3 text-5xl font-semibold tracking-[-0.05em]">Get classroom-ready in under 5 minutes.</h1>
         <div className="mt-8 grid gap-4">
           <div className={`rounded-xl p-5 ${studentCount > 0 ? 'bg-[#e8f8f8]' : 'bg-white'}`}>

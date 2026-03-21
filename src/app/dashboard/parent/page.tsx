@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ParentMessagePanel } from "@/components/parent-message-panel";
+import Link from "next/link";
 import { ParentDownloadReportButton } from "@/components/parent-download-report-button";
 
 export default async function ParentDashboardPage() {
@@ -26,7 +27,8 @@ export default async function ParentDashboardPage() {
       <SiteHeader />
       <section className="mx-auto max-w-6xl px-6 py-16 lg:px-10">
         <div>
-          <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-orange)]">Parent Portal</div>
+          <Link href="/login" className="panel-back">← Back</Link>
+          <div className="mt-2 text-sm uppercase tracking-[0.24em] text-[var(--bb-orange)]">Parent Portal</div>
           <h1 className="mt-3 text-5xl font-semibold tracking-[-0.05em]">Hello, {session.name}.</h1>
           <p className="mt-4 text-lg leading-8 text-slate-600">Here is your child&apos;s current progress in simple terms.</p>
         </div>

@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AdminReportButton } from "@/components/admin-report-button";
 import { AdminBoardPacketButton } from "@/components/admin-board-packet-button";
+import Link from "next/link";
 
 export default async function AdminDashboardPage() {
   const session = await getSession();
@@ -25,7 +26,8 @@ export default async function AdminDashboardPage() {
       <SiteHeader />
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
         <div>
-          <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-blue)]">School Admin Portal</div>
+          <Link href="/login" className="panel-back">← Back</Link>
+          <div className="mt-2 text-sm uppercase tracking-[0.24em] text-[var(--bb-blue)]">School Admin Portal</div>
           <h1 className="mt-3 text-5xl font-semibold tracking-[-0.05em]">{session.school || "District"} Overview</h1>
           <p className="mt-4 text-lg leading-8 text-slate-600">Account visibility and compliance reporting only (student content hidden by design).</p>
         </div>

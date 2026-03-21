@@ -85,7 +85,8 @@ export default async function DashboardPage() {
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Teacher Dashboard</div>
+            <Link href="/login" className="panel-back">← Back</Link>
+            <div className="mt-2 text-sm uppercase tracking-[0.24em] text-[var(--bb-dark-teal)]">Teacher Dashboard</div>
             <h1 className="mt-3 text-5xl font-semibold tracking-[-0.05em]">Welcome back, {session.name}.</h1>
             <p className="mt-4 text-lg leading-8 text-slate-600">Review student progress, recent activity, and where support is needed next.</p>
           </div>
