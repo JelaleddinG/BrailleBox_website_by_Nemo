@@ -40,7 +40,10 @@ export async function SiteHeader() {
           ))}
         </nav>
         {session ? (
-          <LogoutButton className="nav-auth-btn btn-logout btn-logout-teacher" />
+          <div className="flex items-center gap-2">
+            <Link href="/ops" className="btn-dark nav-auth-btn">Ops</Link>
+            <LogoutButton className="nav-auth-btn btn-logout btn-logout-teacher" />
+          </div>
         ) : (
           <Link href="/login" className="nav-auth-btn btn-primary">Login</Link>
         )}
